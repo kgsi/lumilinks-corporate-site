@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+
+:root {
+  --font-family-base: 'IBM Plex Sans JP', sans-serif;
+  --body-column: 45rem;
+  --body-padding-without-safe-area: clamp(
+    1rem,
+    max((100cqi - var(--body-column))/2, 5cqi),
+    10cqi
+  );
+  --body-padding-right: calc(
+    var(--body-padding-without-safe-area) + env(safe-area-inset-right)
+  );
+  --body-padding-left: calc(
+    var(--body-padding-without-safe-area) + env(safe-area-inset-left)
+  );
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: 1.5rem;
+  line-height: 1.625;
+}

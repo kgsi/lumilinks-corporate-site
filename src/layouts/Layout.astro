@@ -1,0 +1,44 @@
+---
+import '../css/global.css';
+import GlobalHeader from '../components/GlobalHeader.astro';
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="robots" content="noindex" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Lumilinks inc. | デザインと、開発と、コミュニティの会社</title>
+  </head>
+  <body>
+    <div
+      class="box-content max-w-(--body-column) pr-(--body-padding-right) pl-(--body-padding-left) *:mx-auto *:w-[round(down,100%,1rem)]"
+    >
+      <slot />
+      <footer class="pt-16 pb-8">
+        <address class="not-italic">
+          Copyright Lumilinks inc. ALL Rights Reserved.
+        </address>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NoteArticleList from '../components/NoteArticleList.astro';
+import { getNoteArticles } from '../utils/note-rss';
+import { Image } from 'astro:assets';
+import GlobalHeader from '../components/GlobalHeader.astro';
+// RSSフィードから記事を取得
+const NOTE_RSS_URL = 'https://note.com/kgsi/rss';
+const noteArticles = await getNoteArticles(NOTE_RSS_URL);
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+  <div class="flex flex-col gap-32">
+    <div class="h-screen">
+      <div class="flex flex-col justify-between h-full pt-16 pb-40">
+        <GlobalHeader />
+        <div class="flex flex-col gap-4">
+          <h1 class="text-5xl leading-tight">
+            デザインと、<br />テクノロジーと、<br />コミュニティの会社です。
+          </h1>
+          <p>
+            Lumilinksはプロダクトデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">提供サービス：</h2>
+      <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl">開発・デザイン</h3>
+          <p>
+            デジタルプロダクトやサービス開発の専門家として、企画から設計・デザイン・実装に至るまでをサポートします。情報設計デザインから、開発プロセスのマネジメントまで幅広く対応し、クライアントのビジネスゴールを的確に捉えながら、ユーザーにとって使いやすく魅力的なプロダクトを創り上げていきます。
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl">デザインアドバイザー</h3>
+          <p>
+            デザインプロセスの効率化や、組織構築支援、デザイナー教育などをサポートするコンサルティングサービスを提供しています。デザインシステムの構築・運用における豊富な経験を活かし、一貫性のあるユーザー体験の実現をサポート。デザイナーの責任領域の定義やフィードバック体制の確立、フェーズに合わせた品質と速度のバランス調整、組織のデザイン力を高めるための包括的なアドバイスを行います。
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl">コミュニティ運営</h3>
+          <p>
+            コミュニティのメンバーが安心して交流し、知識を共有し合いながら成長できる場をつくっています。オンライン・オフラインを問わず、イベント企画やコンテンツ制作、ファシリテーションなどを幅広く手掛け、一人ひとりの思いや目標が最大限に活かされるようサポートします。
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8">
+      <h2 class="font-bold">記事:</h2>
+      <div>
+        <NoteArticleList articles={noteArticles} limit={6} />
+      </div>
+    </section>
+    <section>
+      <h2>実績</h2>
+      <div>
+        <div>
+          <Image
+            src={'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'}
+            width={300}
+            height={150}
+            alt="Green double couch with wooden legs"
+          />
+          <div>
+            <h3>Living room Sofa</h3>
+            <p>
+              This sofa is perfect for modern tropical spaces, baroque inspired
+              spaces.
+            </p>
+          </div>
+        </div>
+        <div>
+          <Image
+            src={'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'}
+            width={300}
+            height={150}
+            alt="Green double couch with wooden legs"
+          />
+          <div>
+            <h3>Living room Sofa</h3>
+            <p>
+              This sofa is perfect for modern tropical spaces, baroque inspired
+              spaces.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .note-articles-section {
+    background-color: #f9f9f9;
+    margin: 3rem 0;
+  }
+</style>
