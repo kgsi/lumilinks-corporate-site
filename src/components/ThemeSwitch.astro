@@ -1,0 +1,150 @@
+---
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class={`${className} flex items-center`} {...rest}>
+  <label class="inline-block h-[26px] relative w-[50px]" for="theme-toggle">
+    <input type="checkbox" id="theme-toggle" class="hidden" />
+    <div class="slider round no-transition">
+      <!-- アイコン -->
+      <svg
+        class="icon w-[14px] h-[14px] text-white z-[1] ml-1"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path>
+        <path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path>
+        <path d="m19.07 4.93-1.41 1.41"></path>
+      </svg>
+      <svg
+        class="icon w-[14px] h-[14px] text-white z-[1] mr-1"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </div>
+  </label>
+</div>
+
+<!-- 初期状態設定 -->
+<script is:inline>
+  (function () {
+    const isDark = document.documentElement.classList.contains('dark');
+    const toggle = document.getElementById('theme-toggle');
+    const slider = document.querySelector('.slider');
+
+    if (toggle) toggle.checked = isDark;
+    if (slider && isDark) {
+      slider.classList.add('dark-mode');
+    }
+  })();
+</script>
+
+<style>
+  .slider {
+    background-color: #ccc;
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+    border-radius: 34px;
+  }
+
+  .slider:before {
+    content: '';
+    position: absolute;
+    background-color: white;
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    transition: 0.4s;
+    z-index: 2;
+    border-radius: 50%;
+  }
+
+  .no-transition,
+  .no-transition:before {
+    transition: none !important;
+  }
+
+  .dark-mode,
+  input:checked + .slider {
+    background-color: #3b82f6;
+  }
+
+  .dark-mode:before,
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+</style>
+
+<script>
+  // DOM要素の参照を取得
+  const themeToggle = document.getElementById(
+    'theme-toggle'
+  ) as HTMLInputElement;
+  const slider = document.querySelector('.slider') as HTMLElement;
+
+  // テーマの切り替え関数
+  function toggleTheme(isDark: boolean) {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+      slider?.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      localStorage.setItem('theme', 'light');
+      slider?.classList.remove('dark-mode');
+    }
+  }
+
+  // 初期設定
+  function initTheme() {
+    // アニメーション無効化
+    slider?.classList.add('no-transition');
+
+    // テーマ設定
+    const isDarkMode = localStorage.getItem('theme') === 'dark';
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    const shouldBeDark =
+      isDarkMode || (prefersDark && !localStorage.getItem('theme'));
+
+    toggleTheme(shouldBeDark);
+    if (themeToggle) themeToggle.checked = shouldBeDark;
+
+    // アニメーション再有効化
+    setTimeout(() => slider?.classList.remove('no-transition'), 300);
+  }
+
+  // ページロード時の初期化
+  if (document.readyState === 'complete') {
+    initTheme();
+  } else {
+    window.addEventListener('load', initTheme);
+  }
+
+  // イベントリスナー
+  themeToggle?.addEventListener('change', () =>
+    toggleTheme(themeToggle.checked)
+  );
+</script>

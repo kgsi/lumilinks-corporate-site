@@ -2,14 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import NoteArticleList from '../components/NoteArticleList.astro';
 import { getNoteArticles } from '../utils/note-rss';
-import { Image } from 'astro:assets';
 import GlobalHeader from '../components/GlobalHeader.astro';
-// RSSフィードから記事を取得
 const NOTE_RSS_URL = 'https://note.com/kgsi/rss';
 const noteArticles = await getNoteArticles(NOTE_RSS_URL);
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
@@ -57,47 +52,5 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
         <NoteArticleList articles={noteArticles} limit={6} />
       </div>
     </section>
-    <section>
-      <h2>実績</h2>
-      <div>
-        <div>
-          <Image
-            src={'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'}
-            width={300}
-            height={150}
-            alt="Green double couch with wooden legs"
-          />
-          <div>
-            <h3>Living room Sofa</h3>
-            <p>
-              This sofa is perfect for modern tropical spaces, baroque inspired
-              spaces.
-            </p>
-          </div>
-        </div>
-        <div>
-          <Image
-            src={'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'}
-            width={300}
-            height={150}
-            alt="Green double couch with wooden legs"
-          />
-          <div>
-            <h3>Living room Sofa</h3>
-            <p>
-              This sofa is perfect for modern tropical spaces, baroque inspired
-              spaces.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </Layout>
-
-<style>
-  .note-articles-section {
-    background-color: #f9f9f9;
-    margin: 3rem 0;
-  }
-</style>

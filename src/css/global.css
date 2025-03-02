@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Tailwind CSS v4のダークモード設定 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --font-family-base: 'IBM Plex Sans JP', sans-serif;
   --body-column: 45rem;
@@ -14,10 +17,29 @@
   --body-padding-left: calc(
     var(--body-padding-without-safe-area) + env(safe-area-inset-left)
   );
+
+  /* カラーテーマ（ライトモード） */
+  --background: white;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --accent: #3b82f6;
+  --border: #e2e8f0;
+}
+
+/* ダークモード用の変数 */
+.dark {
+  color-scheme: dark;
+  --background: black;
+  --text-primary: white;
+  --text-secondary: #a0aec0;
+  --accent: #4299e1;
+  --border: #2d3748;
 }
 
 body {
   font-family: var(--font-family-base);
   font-size: 1.5rem;
   line-height: 1.625;
+  background-color: var(--background);
+  color: var(--text-primary);
 }

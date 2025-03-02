@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # specstory folder
 .specstory/
+
+# env
+.env.local
+.env
