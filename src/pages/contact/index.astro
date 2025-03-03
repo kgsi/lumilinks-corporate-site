@@ -1,6 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import GlobalHeader from '../../components/GlobalHeader.astro';
+
+// 環境変数からSSGFormのURLを取得
+const ssgformUrl = import.meta.env.SSGFORM_URL;
 ---
 
 <Layout>
@@ -14,13 +17,17 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
       </p>
     </div>
 
-    <form id="contact-form" class="flex flex-col gap-6 max-w-2xl">
+    <form
+      action={ssgformUrl}
+      method="post"
+      class="flex flex-col gap-6 max-w-2xl"
+    >
       <div class="flex flex-col gap-2">
         <label for="name" class="font-medium">お名前</label>
         <input
           type="text"
           id="name"
-          name="name"
+          name="お名前"
           required
           class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
         />
@@ -31,7 +38,7 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
         <input
           type="email"
           id="email"
-          name="email"
+          name="メールアドレス"
           required
           class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
         />
@@ -42,7 +49,7 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
         <input
           type="text"
           id="subject"
-          name="subject"
+          name="件名"
           class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
         />
       </div>
@@ -51,7 +58,7 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
         <label for="message" class="font-medium">お問い合わせ内容</label>
         <textarea
           id="message"
-          name="message"
+          name="お問い合わせ内容"
           rows="6"
           required
           class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
@@ -65,61 +72,7 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
         >
           送信
         </button>
-        <p id="form-status" class="hidden"></p>
       </div>
     </form>
   </section>
 </Layout>
-
-<script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const formStatus = document.getElementById(
-    'form-status'
-  ) as HTMLParagraphElement;
-
-  if (form && formStatus) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // 送信中の表示
-      formStatus.textContent = '送信中...';
-      formStatus.className = 'text-blue-500';
-      formStatus.classList.remove('hidden');
-
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          // 成功メッセージの表示
-          formStatus.textContent =
-            'お問い合わせを受け付けました。ありがとうございます。';
-          formStatus.className = 'text-green-500';
-          form.reset();
-        } else {
-          // エラーメッセージの表示
-          formStatus.textContent = `エラーが発生しました: ${
-            result.error || '不明なエラー'
-          }`;
-          formStatus.className = 'text-red-500';
-        }
-      } catch (error) {
-        // エラーメッセージの表示
-        formStatus.textContent =
-          'サーバーとの通信中にエラーが発生しました。時間をおいて再度お試しください。';
-        formStatus.className = 'text-red-500';
-        console.error('Error submitting form:', error);
-      }
-    });
-  }
-</script>
