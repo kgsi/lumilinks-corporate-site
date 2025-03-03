@@ -10,11 +10,12 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
 <Layout>
   <div class="flex flex-col gap-32">
     <div class="h-screen">
-      <div class="flex flex-col gap-12 justify-between h-full pt-16 pb-40">
+      <div class="flex flex-col gap-12 justify-between h-full pt-16 pb-64">
         <GlobalHeader />
         <div class="flex flex-col gap-4">
-          <h1 class="text-5xl leading-tight">
-            デザインと、<br />テクノロジーと、<br />コミュニティの会社です。
+          <h1 class="text-4xl sm:text-5xl leading-tight break-keep font-normal">
+            デザインと、<wbr />テクノロジーと、<wbr />コミュニティの<wbr
+            />会社です。
           </h1>
           <p>
             Lumilinks（ルミリンクス）はデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。
@@ -27,19 +28,19 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
       <h2 class="font-semibold">提供サービス：</h2>
       <div class="flex flex-col gap-16">
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl">開発・デザイン</h3>
+          <h3 class="text-4xl font-normal">開発・デザイン</h3>
           <p>
             デジタルプロダクトやサービス開発の専門家として、企画から設計・デザイン・実装に至るまでをサポートします。情報設計デザインから、開発プロセスのマネジメントまで幅広く対応し、クライアントのビジネスゴールを的確に捉えながら、ユーザーにとって使いやすく魅力的なプロダクトを創り上げていきます。
           </p>
         </div>
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl">デザインアドバイザー</h3>
+          <h3 class="text-4xl font-normal">デザインアドバイザー</h3>
           <p>
             デザインプロセスの効率化や、組織構築支援、デザイナー教育などをサポートするコンサルティングサービスを提供しています。デザインシステムの構築・運用における豊富な経験を活かし、一貫性のあるユーザー体験の実現をサポート。デザイナーの責任領域の定義やフィードバック体制の確立、フェーズに合わせた品質と速度のバランス調整、組織のデザイン力を高めるための包括的なアドバイスを行います。
           </p>
         </div>
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl">コミュニティ運営</h3>
+          <h3 class="text-4xl font-normal">コミュニティ運営</h3>
           <p>
             コミュニティのメンバーが安心して交流し、知識を共有し合いながら成長できる場をつくっています。オンライン・オフラインを問わず、イベント企画やコンテンツ制作、ファシリテーションなどを幅広く手掛け、一人ひとりの思いや目標が最大限に活かされるようサポートします。
           </p>
@@ -47,7 +48,7 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
       </div>
     </section>
     <section class="flex flex-col gap-8">
-      <h2 class="font-bold">記事:</h2>
+      <h2 class="font-semibold">記事:</h2>
       <div>
         <NoteArticleList articles={noteArticles} limit={6} />
       </div>
