@@ -13,7 +13,13 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       <h1 class="text-5xl mb-8">お問い合わせ</h1>
       <p class="mb-4">
         以下のフォームからお気軽にお問い合わせください。
-        XやFacebookなどでお問い合わせいただくことも可能です。
+        <a href="https://x.com/kgsi" target="_blank" class="underline"
+          >X（旧Twitter）</a
+        >や<a
+          href="https://www.facebook.com/shinichi.kogiso/"
+          target="_blank"
+          class="underline">Facebook</a
+        >などでお問い合わせいただくことも可能です。
       </p>
     </div>
 
@@ -39,6 +45,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
           type="email"
           id="email"
           name="メールアドレス"
+          autocomplete="email"
           required
           class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
         />
