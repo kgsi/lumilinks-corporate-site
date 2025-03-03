@@ -35,7 +35,19 @@ import '../css/global.css';
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
-
+    <script
+      is:inline
+      type="text/partytown"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-1R2H4VCDHH"></script>
+    <script is:inline type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-1R2H4VCDHH');
+    </script>
     <title>{title}</title>
     <script is:inline>
       // クライアントサイドでのテーマ初期化スクリプト
