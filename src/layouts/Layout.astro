@@ -8,7 +8,6 @@ const {
   title = '株式会社Lumilinks | デザインと、開発と、コミュニティの会社',
   description = 'Lumilinks（ルミリンクス）はデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。',
 } = Astro.props;
-const socialImageURL = new URL('../../public/ogp.png', Astro.url);
 
 import '../css/global.css';
 ---
@@ -24,7 +23,9 @@ import '../css/global.css';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Lumilinks" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image" content="https://lumilinks.jp/ogp.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -75,12 +76,3 @@ import '../css/global.css';
     </div>
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
