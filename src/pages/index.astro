@@ -1,8 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import NoteArticleList from '../components/NoteArticleList.astro';
 import { getNoteArticles } from '../utils/note-rss';
 import GlobalHeader from '../components/GlobalHeader.astro';
+
+import imageCrossRel from '../assets/crossrel.png';
+import imageDesignerMentor from '../assets/designer-mentor.png';
+
 const NOTE_RSS_URL = 'https://note.com/kgsi/rss';
 const noteArticles = await getNoteArticles(NOTE_RSS_URL);
 ---
@@ -30,20 +35,46 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
         <div class="flex flex-col gap-4">
           <h3 class="text-4xl font-normal">開発・デザイン</h3>
           <p>
-            デジタルプロダクトやサービス開発の専門家として、企画から設計・デザイン・実装に至るまでをサポートします。情報設計デザインから、開発プロセスのマネジメントまで幅広く対応し、クライアントのビジネスゴールを的確に捉えながら、ユーザーにとって使いやすく魅力的なプロダクトを創り上げていきます。
+            デジタルプロダクトやサービス開発の専門家として、企画から設計・デザイン・実装に至るまでをサポートします。情報設計デザインから、開発プロセスのマネジメントまで幅広く対応し、クライアントのビジネスゴールを的確に捉えながら、ユーザーにとって使いやすく、価値のあるプロダクトを伴奏して作ります。
           </p>
         </div>
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl font-normal">デザインアドバイザー</h3>
+          <h3 class="text-4xl font-normal">デザイン顧問</h3>
           <p>
             デザインプロセスの効率化や、組織構築支援、デザイナー教育などをサポートするコンサルティングサービスを提供しています。デザインシステムの構築・運用における豊富な経験を活かし、一貫性のあるユーザー体験の実現をサポート。デザイナーの責任領域の定義やフィードバック体制の確立、フェーズに合わせた品質と速度のバランス調整、組織のデザイン力を高めるための包括的なアドバイスを行います。
           </p>
         </div>
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl font-normal">コミュニティ運営</h3>
+          <h3 class="text-4xl font-normal">コミュニティ支援</h3>
           <p>
             コミュニティのメンバーが安心して交流し、知識を共有し合いながら成長できる場をつくっています。オンライン・オフラインを問わず、イベント企画やコンテンツ制作、ファシリテーションなどを幅広く手掛け、一人ひとりの思いや目標が最大限に活かされるようサポートします。
           </p>
+        </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">運営サービス：</h2>
+      <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a href="https://crossrel.jp/" class="underline">CrossRel</a>
+          </h3>
+          <p>
+            「CrossRel」は、テック業界の多様な才能を集め、ナレッジや人材同士が交差できるコミュニティです。
+            一企業主催ではなかなか実施しにくいエッジの効いたテーマ、コミュニティ運営をできるような、実験的コミュニティ運営を目指しています。
+          </p>
+          <Image src={imageCrossRel} alt="" />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a href="https://menta.work/plan/2529" class="underline"
+              >デザイナーメンター</a
+            >
+          </h3>
+          <p>
+            15年以上の実績から、デザイナーの悩みや課題解決の相談やスキルアップのためのデザイナーメンターサービスを提供しています。
+          </p>
+          <Image src={imageDesignerMentor} alt="" />
         </div>
       </div>
     </section>
