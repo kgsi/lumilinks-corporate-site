@@ -114,51 +114,32 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
   </section>
 </Layout>
 
+<script
+  is:inline
+  src="https://www.google.com/recaptcha/api.js?render={recaptchaSiteKey}"
+></script>
 <script define:vars={{ recaptchaSiteKey }}>
-  // reCAPTCHAの遅延読み込み
-  const loadRecaptcha = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
-      script.onload = () => {
-        // grecaptchaオブジェクトが利用可能になるまで待機
-        const waitForGrecaptcha = setInterval(() => {
-          if (window.grecaptcha && window.grecaptcha.execute) {
-            clearInterval(waitForGrecaptcha);
-            resolve();
-          }
-        }, 100);
-      };
-      document.body.appendChild(script);
-    });
-  };
-
   const form = document.getElementById('contact-form');
   const submitButton = document.getElementById('submit-button');
 
-  let recaptchaLoaded = false;
+  grecaptcha.ready(function () {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitButton.disabled = true;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    submitButton.disabled = true;
-
-    try {
-      if (!recaptchaLoaded) {
-        await loadRecaptcha();
-        recaptchaLoaded = true;
-      }
-
-      const token = await window.grecaptcha.execute(recaptchaSiteKey, {
-        action: 'submit',
-      });
-      document.getElementById('g-recaptcha-response').value = token;
-      form.submit();
-    } catch (error) {
-      console.error('reCAPTCHA error:', error);
-      alert('エラーが発生しました。しばらく時間をおいて再度お試しください。');
-      submitButton.disabled = false;
-    }
-  };
-
-  form.addEventListener('submit', handleSubmit);
+      grecaptcha
+        .execute(recaptchaSiteKey, { action: 'submit' })
+        .then(function (token) {
+          document.getElementById('g-recaptcha-response').value = token;
+          form.submit();
+        })
+        .catch(function (error) {
+          console.error('reCAPTCHA error:', error);
+          alert(
+            'エラーが発生しました。しばらく時間をおいて再度お試しください。'
+          );
+          submitButton.disabled = false;
+        });
+    });
+  });
 </script>
