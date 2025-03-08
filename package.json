@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
+    "@astrojs/sitemap": "^3.2.1",
     "@tailwindcss/vite": "^4.0.9",
     "astro": "^5.4.2",
     "astro-icon": "^1.1.5",
