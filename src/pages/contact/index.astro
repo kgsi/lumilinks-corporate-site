@@ -2,8 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import GlobalHeader from '../../components/GlobalHeader.astro';
 
-// 環境変数からSSGFormのURLを取得
+// 環境変数からSSGFormのURLとreCAPTCHAのサイトキーを取得
 const ssgformUrl = import.meta.env.SSGFORM_URL;
+const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <Layout
@@ -30,6 +31,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       action={ssgformUrl}
       method="post"
       class="flex flex-col gap-6 max-w-2xl"
+      id="contact-form"
     >
       <div class="flex flex-col gap-2">
         <label for="name" class="font-medium">お名前</label>
@@ -75,6 +77,12 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
         ></textarea>
       </div>
 
+      <input
+        type="hidden"
+        name="g-recaptcha-response"
+        id="g-recaptcha-response"
+      />
+
       <div class="flex items-center gap-2">
         <button
           type="submit"
@@ -86,3 +94,23 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
     </form>
   </section>
 </Layout>
+
+<script
+  src="https://www.google.com/recaptcha/api.js?render=6Lf4-O0qAAAAAIF5d9N9M2EqRlq23rXz7sPQoWHY"
+></script>
+<script define:vars={{ recaptchaSiteKey }}>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const token = await grecaptcha.execute(recaptchaSiteKey, {
+        action: 'submit',
+      });
+      document.getElementById('g-recaptcha-response').value = token;
+      form.submit();
+    } catch (error) {
+      console.error('reCAPTCHA error:', error);
+      alert('エラーが発生しました。しばらく時間をおいて再度お試しください。');
+    }
+  });
+</script>
