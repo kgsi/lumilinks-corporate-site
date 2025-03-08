@@ -38,7 +38,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       id="contact-form"
     >
       <div class="flex flex-col gap-2">
-        <label for="name" class="font-medium">お名前</label>
+        <label for="name">お名前</label>
         <input
           type="text"
           id="name"
@@ -49,7 +49,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="email" class="font-medium">メールアドレス</label>
+        <label for="email">メールアドレス</label>
         <input
           type="email"
           id="email"
@@ -61,7 +61,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="subject" class="font-medium">件名（任意）</label>
+        <label for="subject">件名（任意）</label>
         <input
           type="text"
           id="subject"
@@ -71,7 +71,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="message" class="font-medium">お問い合わせ内容</label>
+        <label for="message">お問い合わせ内容</label>
         <textarea
           id="message"
           name="お問い合わせ内容"
@@ -81,13 +81,27 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         ></textarea>
       </div>
 
+      <div class="flex flex-row items-center gap-4">
+        <input
+          type="checkbox"
+          id="privacy"
+          class="w-6 h-6 mb-0.5"
+          name="プライバシーポリシーに同意して送信する"
+          required
+        />
+        <label for="privacy" class="text-normal mt-0.5">
+          <a href="/privacy" class="underline hover:no-underline"
+            >プライバシーポリシー</a
+          >に同意して送信する
+        </label>
+      </div>
       <input
         type="hidden"
         name="g-recaptcha-response"
         id="g-recaptcha-response"
       />
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 mt-4">
         <button
           type="submit"
           class="px-8 py-2 bg-black text-white dark:text-black dark:bg-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
