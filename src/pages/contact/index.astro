@@ -9,7 +9,7 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 
 <Layout
   title="お問い合わせ | 株式会社Lumilinks"
-  description="Lumilinksのお問い合わせフォームです。"
+  description="Lumilinksのお問い合わせフォームです。お仕事のご依頼やご相談など、お気軽にお問い合わせください。"
 >
   <section class="pt-16">
     <GlobalHeader />
@@ -17,12 +17,16 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       <h1 class="text-4xl sm:text-5xl font-normal mb-8">お問い合わせ</h1>
       <p class="mb-4">
         以下のフォームからお気軽にお問い合わせください。
-        <a href="https://x.com/kgsi" target="_blank" class="underline"
-          >X（旧Twitter）</a
+        <a
+          href="https://x.com/kgsi"
+          target="_blank"
+          rel="noopener"
+          class="underline hover:no-underline">X（旧Twitter）</a
         >や<a
           href="https://www.facebook.com/shinichi.kogiso/"
           target="_blank"
-          class="underline">Facebook</a
+          rel="noopener"
+          class="underline hover:no-underline">Facebook</a
         >などでお問い合わせいただくことも可能です。
       </p>
     </div>
@@ -86,23 +90,49 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       <div class="flex items-center gap-2">
         <button
           type="submit"
-          class="px-8 py-2 bg-black text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          class="px-8 py-2 bg-black text-white dark:text-black dark:bg-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          id="submit-button"
         >
           送信
         </button>
+        <div id="submit-status" class="text-sm text-gray-600 hidden">
+          送信中...
+        </div>
       </div>
     </form>
   </section>
 </Layout>
 
-<script
-  src="https://www.google.com/recaptcha/api.js?render=6Lf4-O0qAAAAAIF5d9N9M2EqRlq23rXz7sPQoWHY"
-></script>
 <script define:vars={{ recaptchaSiteKey }}>
+  // reCAPTCHAの遅延読み込み
+  const loadRecaptcha = () => {
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+    document.body.appendChild(script);
+    return new Promise((resolve) => {
+      script.onload = resolve;
+    });
+  };
+
   const form = document.getElementById('contact-form');
-  form.addEventListener('submit', async (e) => {
+  const submitButton = document.getElementById('submit-button');
+  const submitStatus = document.getElementById('submit-status');
+
+  let recaptchaLoaded = false;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    submitButton.disabled = true;
+    submitStatus.classList.remove('hidden');
+
     try {
+      if (!recaptchaLoaded) {
+        await loadRecaptcha();
+        recaptchaLoaded = true;
+        // reCAPTCHAの読み込み完了を待つ
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+
       const token = await grecaptcha.execute(recaptchaSiteKey, {
         action: 'submit',
       });
@@ -111,6 +141,10 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     } catch (error) {
       console.error('reCAPTCHA error:', error);
       alert('エラーが発生しました。しばらく時間をおいて再度お試しください。');
+      submitButton.disabled = false;
+      submitStatus.classList.add('hidden');
     }
-  });
+  };
+
+  form.addEventListener('submit', handleSubmit);
 </script>

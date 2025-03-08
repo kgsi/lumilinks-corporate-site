@@ -5,8 +5,14 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
 
 <Layout
   title="会社概要 | 株式会社Lumilinks"
-  description="Lumilinksの会社概要です。"
+  description="Lumilinksの会社概要です。Lumilinksはデザイナーのこぎそが運営する小さな会社です。"
 >
+  <head>
+    <!-- 外部ドメインへの事前接続 -->
+    <link rel="preconnect" href="https://x.com" />
+    <link rel="preconnect" href="https://bnn.co.jp" />
+  </head>
+
   <section class="pt-16">
     <GlobalHeader />
     <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
@@ -34,15 +40,17 @@ import GlobalHeader from '../../components/GlobalHeader.astro';
             こぎそ / <a
               href="https://x.com/kgsi"
               target="_blank"
-              class="underline">X（旧Twitter）</a
+              rel="noopener"
+              class="underline hover:no-underline">X（旧Twitter）</a
             >
           </p>
           <p>
             受託制作会社でデザイナー・エンジニアとして勤務後、さくらインターネット株式会社のデザインエンジニアとしてプロダクト開発に従事。2020年に株式会社SmartHRに入社、プロダクトデザイナーとしてプロダクトの開発やデザインシステム・UIコンポーネント設計などにも携わる。2024年に生成AIベンチャーに勤務後、2025年からスタートアップの1人目デザイナーとして活動。
             パラレルキャリアを標榜し、副業でエンジニア・デザイナー・アドバイザーとして活動中。著書に<a
-              class="underline"
+              class="uunderline hover:no-underline"
               href="https://bnn.co.jp/products/9784802512480"
-              >『ちいさくはじめるデザインシステム（BNN）』</a
+              target="_blank"
+              rel="noopener">『ちいさくはじめるデザインシステム（BNN）』</a
             >など。
           </p>
         </div>
