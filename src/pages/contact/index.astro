@@ -109,7 +109,6 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         >
           送信
         </button>
-        <div id="submit-status">送信中...</div>
       </div>
     </form>
   </section>
@@ -136,14 +135,12 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 
   const form = document.getElementById('contact-form');
   const submitButton = document.getElementById('submit-button');
-  const submitStatus = document.getElementById('submit-status');
 
   let recaptchaLoaded = false;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     submitButton.disabled = true;
-    submitStatus.classList.remove('hidden');
 
     try {
       if (!recaptchaLoaded) {
@@ -160,7 +157,6 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       console.error('reCAPTCHA error:', error);
       alert('エラーが発生しました。しばらく時間をおいて再度お試しください。');
       submitButton.disabled = false;
-      submitStatus.classList.add('hidden');
     }
   };
 
