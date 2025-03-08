@@ -114,32 +114,36 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
   </section>
 </Layout>
 
-<script
-  is:inline
-  src="https://www.google.com/recaptcha/api.js?render={recaptchaSiteKey}"
-></script>
 <script define:vars={{ recaptchaSiteKey }}>
-  const form = document.getElementById('contact-form');
-  const submitButton = document.getElementById('submit-button');
+  // reCAPTCHAスクリプトの読み込み
+  const script = document.createElement('script');
+  script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
+  document.head.appendChild(script);
 
-  grecaptcha.ready(function () {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      submitButton.disabled = true;
+  // reCAPTCHAの初期化を待機
+  script.onload = () => {
+    grecaptcha.ready(function () {
+      const form = document.getElementById('contact-form');
+      const submitButton = document.getElementById('submit-button');
 
-      grecaptcha
-        .execute(recaptchaSiteKey, { action: 'submit' })
-        .then(function (token) {
-          document.getElementById('g-recaptcha-response').value = token;
-          form.submit();
-        })
-        .catch(function (error) {
-          console.error('reCAPTCHA error:', error);
-          alert(
-            'エラーが発生しました。しばらく時間をおいて再度お試しください。'
-          );
-          submitButton.disabled = false;
-        });
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitButton.disabled = true;
+
+        grecaptcha
+          .execute(recaptchaSiteKey, { action: 'submit' })
+          .then(function (token) {
+            document.getElementById('g-recaptcha-response').value = token;
+            form.submit();
+          })
+          .catch(function (error) {
+            console.error('reCAPTCHA error:', error);
+            alert(
+              'エラーが発生しました。しばらく時間をおいて再度お試しください。'
+            );
+            submitButton.disabled = false;
+          });
+      });
     });
-  });
+  };
 </script>
