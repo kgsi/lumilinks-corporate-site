@@ -115,21 +115,19 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 </Layout>
 
 <script
-  src="https://www.google.com/recaptcha/api.js?render=6Lf4-O0qAAAAAIF5d9N9M2EqRlq23rXz7sPQoWHY"
-></script>
+  src={`https://www.google.com/recaptcha/api.js?render=6Lf4-O0qAAAAAIF5d9N9M2EqRlq23rXz7sPQoWHY`}
+  async
+  defer
+  crossorigin="anonymous"></script>
 <script define:vars={{ recaptchaSiteKey }}>
-  const form = document.getElementById('contact-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    try {
+  document
+    .getElementById('contact-form')
+    .addEventListener('submit', async (e) => {
+      e.preventDefault();
       const token = await grecaptcha.execute(recaptchaSiteKey, {
         action: 'submit',
       });
       document.getElementById('g-recaptcha-response').value = token;
-      form.submit();
-    } catch (error) {
-      console.error('reCAPTCHA error:', error);
-      alert('エラーが発生しました。しばらく時間をおいて再度お試しください。');
-    }
-  });
+      e.target.submit();
+    });
 </script>
