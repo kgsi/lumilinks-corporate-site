@@ -118,3 +118,8 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 </Layout>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script is:inline>
+  function onSubmit(token) {
+    document.getElementById('contact-form').submit();
+  }
+</script>
