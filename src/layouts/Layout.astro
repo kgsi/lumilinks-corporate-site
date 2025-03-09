@@ -9,6 +9,7 @@ const {
   description = 'Lumilinks（ルミリンクス）はデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。',
 } = Astro.props;
 
+import GlobalFooter from '../components/GlobalFooter.astro';
 import '../css/global.css';
 ---
 
@@ -79,21 +80,7 @@ import '../css/global.css';
       class="box-content max-w-(--body-column) pr-(--body-padding-right) pl-(--body-padding-left) *:mx-auto *:w-[round(down,100%,1rem)]"
     >
       <slot />
-      <footer class="mt-32 pb-16 flex flex-col gap-8">
-        <hr />
-        <nav>
-          <ul class="flex flex-row gap-4">
-            <li>
-              <a href="/privacy" class="underline hover:no-underline"
-                >プライバシーポリシー</a
-              >
-            </li>
-          </ul>
-        </nav>
-        <address class="not-italic">
-          Copyright&copy; Lumilinks inc. ALL Rights Reserved.
-        </address>
-      </footer>
+      <GlobalFooter />
     </div>
   </body>
 </html>
