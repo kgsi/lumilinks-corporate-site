@@ -2,9 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import GlobalHeader from '../../components/GlobalHeader.astro';
 
-// 環境変数からSSGFormのURLとreCAPTCHAのサイトキーを取得
+// 環境変数からSSGFormのURLを取得
 const ssgformUrl = import.meta.env.SSGFORM_URL;
-const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <Layout
@@ -95,20 +94,11 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
           >に同意して送信する
         </label>
       </div>
-      <input
-        type="hidden"
-        name="g-recaptcha-response"
-        id="g-recaptcha-response"
-      />
 
       <div class="flex items-center gap-4 mt-4">
         <button
           type="submit"
-          data-sitekey={recaptchaSiteKey}
-          data-callback="onSubmit"
-          data-action="submit"
           class="px-8 py-2 bg-black text-white dark:text-black dark:bg-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          id="submit-button"
         >
           送信
         </button>
@@ -116,10 +106,3 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     </form>
   </section>
 </Layout>
-
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script is:inline>
-  function onSubmit(token) {
-    document.getElementById('contact-form').submit();
-  }
-</script>
