@@ -8,7 +8,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
 
 <Layout
   title="お問い合わせ | 株式会社Lumilinks"
-  description="Lumilinksのお問い合わせフォームです。お仕事のご依頼やご相談など、お気軽にお問い合わせください。"
+  description="Lumilinksのお問い合わせフォームです。"
 >
   <section class="pt-16">
     <GlobalHeader />
@@ -16,16 +16,12 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       <h1 class="text-4xl sm:text-5xl font-normal mb-8">お問い合わせ</h1>
       <p class="mb-4">
         以下のフォームからお気軽にお問い合わせください。
-        <a
-          href="https://x.com/kgsi"
-          target="_blank"
-          rel="noopener"
-          class="underline hover:no-underline">X（旧Twitter）</a
+        <a href="https://x.com/kgsi" target="_blank" class="underline"
+          >X（旧Twitter）</a
         >や<a
           href="https://www.facebook.com/shinichi.kogiso/"
           target="_blank"
-          rel="noopener"
-          class="underline hover:no-underline">Facebook</a
+          class="underline">Facebook</a
         >などでお問い合わせいただくことも可能です。
       </p>
     </div>
@@ -34,10 +30,9 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       action={ssgformUrl}
       method="post"
       class="flex flex-col gap-6 max-w-2xl"
-      id="contact-form"
     >
       <div class="flex flex-col gap-2">
-        <label for="name">お名前</label>
+        <label for="name" class="font-medium">お名前</label>
         <input
           type="text"
           id="name"
@@ -48,7 +43,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="email">メールアドレス</label>
+        <label for="email" class="font-medium">メールアドレス</label>
         <input
           type="email"
           id="email"
@@ -60,7 +55,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="subject">件名（任意）</label>
+        <label for="subject" class="font-medium">件名（任意）</label>
         <input
           type="text"
           id="subject"
@@ -70,7 +65,7 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
       </div>
 
       <div class="flex flex-col gap-2">
-        <label for="message">お問い合わせ内容</label>
+        <label for="message" class="font-medium">お問い合わせ内容</label>
         <textarea
           id="message"
           name="お問い合わせ内容"
@@ -80,25 +75,10 @@ const ssgformUrl = import.meta.env.SSGFORM_URL;
         ></textarea>
       </div>
 
-      <div class="flex flex-row items-center gap-4">
-        <input
-          type="checkbox"
-          id="privacy"
-          class="w-6 h-6 mb-0.5"
-          name="プライバシーポリシーに同意して送信する"
-          required
-        />
-        <label for="privacy" class="text-normal mt-0.5">
-          <a href="/privacy" class="underline hover:no-underline"
-            >プライバシーポリシー</a
-          >に同意して送信する
-        </label>
-      </div>
-
-      <div class="flex items-center gap-4 mt-4">
+      <div class="flex items-center gap-2">
         <button
           type="submit"
-          class="px-8 py-2 bg-black text-white dark:text-black dark:bg-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          class="px-8 py-2 bg-black text-white hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           送信
         </button>
