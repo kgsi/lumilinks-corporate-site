@@ -67,56 +67,54 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
       <div class="flex flex-col gap-16">
         <div class="flex flex-col gap-4">
           <h3 class="text-4xl font-normal">
-            <!-- <a
+            <a
               href="https://crossrel.jp/"
               target="_blank"
               rel="noopener"
               class="underline hover:no-underline">CrossRel</a
-            > -->
-
-            CrossRel
-          </h3>
-          <p>
-            「CrossRel」は、テック業界の多様な才能を集め、ナレッジや人が交差するコミュニティです。
-            大企業ではなかなか実施しにくいテーマ、実験的なコミュニティ企画を実施しています。
-          </p>
-          <Image
-            src={imageCrossRel}
-            alt="CrossRelのスクリーンショット"
-            width={800}
-            height={400}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div class="flex flex-col gap-4">
-          <h3 class="text-4xl font-normal">
-            <a
-              href="https://menta.work/plan/2529"
-              target="_blank"
-              rel="noopener"
-              class="underline hover:no-underline">デザイナーメンター</a
             >
           </h3>
-          <p>
-            15年以上の実績から、デザイナーの悩みや課題解決の相談やスキルアップのためのデザイナーメンターサービスを提供しています。
-          </p>
-          <Image
-            src={imageDesignerMentor}
-            alt="デザイナーメンターサービスの説明画像"
-            width={800}
-            height={400}
-            loading="lazy"
-            decoding="async"
-          />
         </div>
+        <p>
+          「CrossRel」は、テック業界の多様な才能を集め、ナレッジや人が交差するイベントコミュニティです。
+          個の力だけでは成し得ない、交差することで生まれる新たな価値創造を目指します。
+        </p>
+        <Image
+          src={imageCrossRel}
+          alt="CrossRelのスクリーンショット"
+          width={800}
+          height={400}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
-    </section>
-    <section class="flex flex-col gap-8">
-      <h2 class="font-semibold">記事:</h2>
-      <div>
-        <NoteArticleList articles={noteArticles} limit={6} />
+      <div class="flex flex-col gap-4">
+        <h3 class="text-4xl font-normal">
+          <a
+            href="https://menta.work/plan/2529"
+            target="_blank"
+            rel="noopener"
+            class="underline hover:no-underline">デザイナーメンター</a
+          >
+        </h3>
+        <p>
+          15年以上の実績から、デザイナーの悩みや課題解決の相談やスキルアップのためのデザイナーメンターサービスを提供しています。
+        </p>
+        <Image
+          src={imageDesignerMentor}
+          alt="デザイナーメンターサービスの説明画像"
+          width={800}
+          height={400}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </section>
   </div>
+  <section class="flex flex-col gap-8">
+    <h2 class="font-semibold">記事:</h2>
+    <div>
+      <NoteArticleList articles={noteArticles} limit={6} />
+    </div>
+  </section>
 </Layout>
