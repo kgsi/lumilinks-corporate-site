@@ -24,11 +24,14 @@ import '../css/global.css';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Lumilinks" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:site_name" content="株式会社Lumilinks" />
     <meta property="og:image" content="https://lumilinks.jp/ogp.png" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta property="og:url" content={Astro.url.href} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={Astro.url.href} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
