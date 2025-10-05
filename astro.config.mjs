@@ -18,11 +18,12 @@ export default defineConfig({
     }),
     sitemap(),
     compress({
-      css: true,
-      html: true,
-      img: true,
-      js: true,
-      svg: true,
+      // Adjusted to match astro-compress option names per typings
+      CSS: true,
+      HTML: true,
+      Image: true,
+      JavaScript: true,
+      SVG: true,
     }),
   ],
   vite: {

@@ -8,13 +8,14 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
-    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.0.9",
-    "astro": "^5.4.2",
+    "astro": "^5.14.1",
     "astro-compress": "^2.3.6",
     "astro-icon": "^1.1.5",
     "rss-parser": "^3.13.0",
