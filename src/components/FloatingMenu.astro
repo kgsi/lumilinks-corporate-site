@@ -13,12 +13,15 @@ const isActive = (href: string) => {
 };
 ---
 
-<div id="floating-menu" class="fixed bottom-10 right-10 z-10 select-none">
+<div
+  id="floating-menu"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-10 select-none sm:bottom-10 sm:left-auto sm:right-10 sm:translate-x-0"
+>
   <div class="relative">
     <button
       id="floating-menu-button"
       type="button"
-      class="flex py-4 items-center justify-center gap-2 px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500"
+      class="flex items-center justify-center gap-2 py-2.5 px-5 sm:py-4 sm:px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500 text-[1rem] sm:text-[1.5rem]"
       aria-label="メニュー"
       aria-haspopup="menu"
       aria-expanded="false"
@@ -27,7 +30,7 @@ const isActive = (href: string) => {
     >
       <!-- Chevron icon -->
       <svg
-        class="pointer-events-none h-6 w-6 transition-transform"
+        class="pointer-events-none h-5 w-5 sm:h-6 sm:w-6 transition-transform"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -43,7 +46,7 @@ const isActive = (href: string) => {
 
     <div
       id="floating-menu-panel"
-      class="absolute bottom-24 right-0 w-64 rounded-2xl bg-neutral-800 text-white shadow-2xl ring-1 ring-white/10 p-3 hidden"
+      class="absolute bottom-20 left-1/2 -translate-x-1/2 w-56 sm:bottom-24 sm:left-auto sm:right-0 sm:translate-x-0 sm:w-64 rounded-2xl bg-neutral-800 text-white shadow-2xl ring-1 ring-white/10 p-3 hidden"
       role="menu"
       aria-labelledby="floating-menu-button"
     >
@@ -51,7 +54,7 @@ const isActive = (href: string) => {
         <li>
           <a
             href="/"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
               isActive('/') ? 'bg-white/10 ring-2 ring-white/40' : ''
             }`}
             role="menuitem"
@@ -60,7 +63,7 @@ const isActive = (href: string) => {
             <span>ホーム</span>
             <!-- home icon -->
             <svg
-              class="h-5 w-5"
+              class="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -77,7 +80,7 @@ const isActive = (href: string) => {
         <li>
           <a
             href="/about"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
               isActive('/about') ? 'bg-white/10 ring-2 ring-white/40' : ''
             }`}
             role="menuitem"
@@ -86,7 +89,7 @@ const isActive = (href: string) => {
             <span>会社概要</span>
             <!-- info icon -->
             <svg
-              class="h-5 w-5"
+              class="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -104,7 +107,7 @@ const isActive = (href: string) => {
         <li>
           <a
             href="/news"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
               isActive('/news') ? 'bg-white/10 ring-2 ring-white/40' : ''
             }`}
             role="menuitem"
@@ -113,7 +116,7 @@ const isActive = (href: string) => {
             <span>お知らせ</span>
             <!-- document icon -->
             <svg
-              class="h-5 w-5"
+              class="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -132,7 +135,7 @@ const isActive = (href: string) => {
         <li>
           <a
             href="/contact"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
               isActive('/contact') ? 'bg-white/10 ring-2 ring-white/40' : ''
             }`}
             role="menuitem"
@@ -141,7 +144,7 @@ const isActive = (href: string) => {
             <span>お問い合わせ</span>
             <!-- mail icon -->
             <svg
-              class="h-5 w-5"
+              class="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
