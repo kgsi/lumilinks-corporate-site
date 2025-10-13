@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GlobalHeader from '../../components/GlobalHeader.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+type PostMeta = {
+  title: string;
+  description?: string;
+  pubDate?: string;
+  url: string;
+};
+const allPosts: CollectionEntry<'news'>[] = await getCollection('news');
+const posts: PostMeta[] = allPosts
+  .map((post) => ({
+    title: post.data.title,
+    description: post.data.description,
+    pubDate: post.data.pubDate,
+    url: `/news/${post.slug}`,
+  }))
+  .sort((a, b) => {
+    const ad = a.url.match(/(\\d{4}-\\d{2}-\\d{2})/);
+    const bd = b.url.match(/(\\d{4}-\\d{2}-\\d{2})/);
+    if (!ad && !bd) return 0;
+    if (!ad) return 1;
+    if (!bd) return -1;
+    return ad[1] > bd[1] ? -1 : 1;
+  });
+---
+
+<Layout
+  title="お知らせ一覧 | 株式会社Lumilinks"
+  description="株式会社Lumilinksのお知らせ一覧です。"
+>
+  <section class="pt-16">
+    <GlobalHeader />
+    <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
+      <h1 class="text-4xl sm:text-5xl font-normal mb-8">お知らせ</h1>
+    </div>
+    <div class="flex flex-col gap-8">
+      {
+        posts.length === 0 ? (
+          <p>お知らせはまだありません。</p>
+        ) : (
+          <div class="flex flex-col gap-6">
+            {posts.map((post) => (
+              <article>
+                <a href={post.url} class="underline hover:no-underline">
+                  <h3 class="text-2xl font-normal">{post.title}</h3>
+                </a>
+                {post.pubDate && (
+                  <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg">
+                    {post.pubDate}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Layout>

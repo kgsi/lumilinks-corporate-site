@@ -1,0 +1,33 @@
+---
+import Layout from './Layout.astro';
+import GlobalHeader from '../components/GlobalHeader.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  pubDate?: string;
+}
+
+const { title, description, pubDate } = Astro.props as Props;
+---
+
+<Layout title={`${title} | 株式会社Lumilinks`} description={description}>
+  <section class="pt-16">
+    <GlobalHeader />
+    <div class="grid grid-cols-1 mb-8 pt-16">
+      <h1 class="text-4xl sm:text-5xl font-normal mb-2 leading-tight">
+        {title}
+      </h1>
+      {
+        pubDate && (
+          <p class="text-gray-500 dark:text-gray-400 text-lg">{pubDate}</p>
+        )
+      }
+    </div>
+    <article
+      class="prose prose-xl prose-neutral dark:prose-invert max-w-none prose-h2:text-3xl prose-p:text-black mt-16"
+    >
+      <slot />
+    </article>
+  </section>
+</Layout>

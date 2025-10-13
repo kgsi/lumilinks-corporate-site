@@ -12,7 +12,7 @@ const { articles, limit } = Astro.props;
 const displayedArticles = limit ? articles.slice(0, limit) : articles;
 ---
 
-<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-10">
   {
     displayedArticles.map((article) => (
       <article>

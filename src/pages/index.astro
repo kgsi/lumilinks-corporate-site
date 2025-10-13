@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import NoteArticleList from '../components/NoteArticleList.astro';
 import { getNoteArticles } from '../utils/note-rss';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import GlobalHeader from '../components/GlobalHeader.astro';
 
 import imageCrossRel from '../assets/crossrel.png';
@@ -10,12 +11,37 @@ import imageDesignerMentor from '../assets/designer-mentor.png';
 
 const NOTE_RSS_URL = 'https://note.com/kgsi/rss';
 const noteArticles = await getNoteArticles(NOTE_RSS_URL);
+
+// お知らせ（content collection）を取得して最新順に整形
+type NewsMeta = {
+  title: string;
+  description?: string;
+  pubDate?: string;
+  url: string;
+};
+const newsCollection: CollectionEntry<'news'>[] = await getCollection('news');
+const newsPosts: NewsMeta[] = newsCollection
+  .map((post) => ({
+    title: post.data.title,
+    description: post.data.description,
+    pubDate: post.data.pubDate,
+    url: `/news/${post.slug}`,
+  }))
+  .sort((a, b) => {
+    const ad = a.url.match(/(\d{4}-\d{2}-\d{2})/);
+    const bd = b.url.match(/(\d{4}-\d{2}-\d{2})/);
+    if (!ad && !bd) return 0;
+    if (!ad) return 1;
+    if (!bd) return -1;
+    return ad[1] > bd[1] ? -1 : 1;
+  })
+  .slice(0, 3);
 ---
 
 <Layout>
   <div class="flex flex-col gap-32">
-    <div class="h-lvh">
-      <div class="flex flex-col gap-12 justify-between h-full pt-16 pb-64">
+    <div class="h-full">
+      <div class="flex flex-col gap-24 justify-between pt-16 pb-64">
         <GlobalHeader />
         <div class="flex flex-col gap-4">
           <h1
@@ -24,7 +50,7 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
             デザインと、<wbr />テクノロジーと、<wbr />コミュニティの<wbr
             />会社です。
           </h1>
-          <p>
+          <p class="text-3xl leading-relaxed">
             Lumilinks（ルミリンクス）はデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。
           </p>
         </div>
@@ -108,6 +134,29 @@ const noteArticles = await getNoteArticles(NOTE_RSS_URL);
             decoding="async"
           />
         </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">お知らせ:</h2>
+      <div class="flex flex-col gap-8">
+        {
+          newsPosts.length === 0 ? (
+            <p>お知らせはまだありません。</p>
+          ) : (
+            newsPosts.map((post) => (
+              <article>
+                <a href={post.url} class="underline hover:no-underline">
+                  <h3 class="text-2xl font-normal">{post.title}</h3>
+                </a>
+                {post.pubDate && (
+                  <p class="text-gray-500 dark:text-gray-400 text-lg">
+                    {post.pubDate}
+                  </p>
+                )}
+              </article>
+            ))
+          )
+        }
       </div>
     </section>
     <section class="flex flex-col gap-8">

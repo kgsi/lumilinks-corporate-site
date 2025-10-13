@@ -10,6 +10,7 @@ const {
 } = Astro.props;
 
 import GlobalFooter from '../components/GlobalFooter.astro';
+import FloatingMenu from '../components/FloatingMenu.astro';
 import '../css/global.css';
 ---
 
@@ -88,5 +89,6 @@ import '../css/global.css';
       <slot />
       <GlobalFooter />
     </div>
+    <FloatingMenu />
   </body>
 </html>

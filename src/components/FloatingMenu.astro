@@ -1,0 +1,268 @@
+---
+// Floating action menu that follows scroll (fixed position)
+const normalizePath = (p: string) => {
+  if (!p) return '/';
+  if (p !== '/' && p.endsWith('/')) return p.slice(0, -1);
+  return p;
+};
+const currentPath = normalizePath(Astro.url.pathname);
+const isActive = (href: string) => {
+  const target = normalizePath(href);
+  if (target === '/') return currentPath === '/';
+  return currentPath === target || currentPath.startsWith(target + '/');
+};
+---
+
+<div id="floating-menu" class="fixed bottom-10 right-10 z-10 select-none">
+  <div class="relative">
+    <button
+      id="floating-menu-button"
+      type="button"
+      class="flex py-4 items-center justify-center gap-2 px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500"
+      aria-label="メニュー"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="floating-menu-panel"
+      accesskey="m"
+    >
+      <!-- Chevron icon -->
+      <svg
+        class="pointer-events-none h-6 w-6 transition-transform"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M6 9l6 6 6-6"></path>
+      </svg>
+      <span>メニュー</span>
+    </button>
+
+    <div
+      id="floating-menu-panel"
+      class="absolute bottom-24 right-0 w-64 rounded-2xl bg-neutral-800 text-white shadow-2xl ring-1 ring-white/10 p-3 hidden"
+      role="menu"
+      aria-labelledby="floating-menu-button"
+    >
+      <ul class="flex flex-col gap-2">
+        <li>
+          <a
+            href="/"
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+              isActive('/') ? 'bg-white/10 ring-2 ring-white/40' : ''
+            }`}
+            role="menuitem"
+            aria-current={isActive('/') && 'page'}
+          >
+            <span>ホーム</span>
+            <!-- home icon -->
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 9l9-7 9 7"></path>
+              <path d="M9 22V12h6v10"></path>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a
+            href="/about"
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+              isActive('/about') ? 'bg-white/10 ring-2 ring-white/40' : ''
+            }`}
+            role="menuitem"
+            aria-current={isActive('/about') && 'page'}
+          >
+            <span>会社概要</span>
+            <!-- info icon -->
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a
+            href="/news"
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+              isActive('/news') ? 'bg-white/10 ring-2 ring-white/40' : ''
+            }`}
+            role="menuitem"
+            aria-current={isActive('/news') && 'page'}
+          >
+            <span>お知らせ</span>
+            <!-- document icon -->
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 19.5V4a2 2 0 0 1 2-2h9l5 5v12.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
+              ></path>
+              <path d="M14 2v6h6"></path>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a
+            href="/contact"
+            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 ${
+              isActive('/contact') ? 'bg-white/10 ring-2 ring-white/40' : ''
+            }`}
+            role="menuitem"
+            aria-current={isActive('/contact') && 'page'}
+          >
+            <span>お問い合わせ</span>
+            <!-- mail icon -->
+            <svg
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+              <path d="M3 7l9 6 9-6"></path>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script is:inline type="module">
+    import { animate, stagger, spring } from 'https://esm.sh/motion@12.23.24';
+
+    const root = document.getElementById('floating-menu');
+    const button = document.getElementById('floating-menu-button');
+    const panel = document.getElementById('floating-menu-panel');
+
+    const chevron = button?.querySelector('svg');
+    const getItems = () => panel?.querySelectorAll('.js-menu-item');
+
+    async function openMenu() {
+      if (!panel || !button) return;
+      button.setAttribute('aria-expanded', 'true');
+      panel.classList.remove('hidden');
+
+      animate(
+        panel,
+        { opacity: [0, 1], y: [8, 0], scale: [0.98, 1] },
+        { duration: 0.25, easing: 'ease-out' }
+      );
+
+      const items = getItems();
+      if (items && items.length) {
+        animate(
+          items,
+          { opacity: [0, 1], x: [-4, 0] },
+          { delay: stagger(0.06), duration: 0.2, easing: 'ease-out' }
+        );
+      }
+
+      if (chevron) animate(chevron, { rotate: [0, 180] }, { easing: spring() });
+      window.addEventListener('keydown', onKeydown);
+      window.addEventListener('click', onOutside, true);
+    }
+
+    async function closeMenu() {
+      if (!panel || !button) return;
+      button.setAttribute('aria-expanded', 'false');
+
+      const items = getItems();
+      if (items && items.length) {
+        await animate(
+          items,
+          { opacity: [1, 0], x: [0, -4] },
+          {
+            delay: stagger(0.04, { from: 'last' }),
+            duration: 0.15,
+            easing: 'ease-in',
+          }
+        ).finished;
+      }
+
+      await animate(
+        panel,
+        { opacity: [1, 0], y: [0, 8], scale: [1, 0.98] },
+        { duration: 0.2, easing: 'ease-in' }
+      ).finished;
+
+      panel.classList.add('hidden');
+      if (chevron) animate(chevron, { rotate: [180, 0] }, { easing: spring() });
+      window.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('click', onOutside, true);
+
+      button.focus();
+    }
+
+    function onKeydown(e) {
+      if (e.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const items = getItems();
+      if (!items || !items.length) return;
+
+      const focusables = Array.from(items);
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey) {
+        if (active === first || active === button) {
+          e.preventDefault();
+          if (last instanceof HTMLElement) last.focus();
+        }
+      } else {
+        if (active === last || active === button) {
+          e.preventDefault();
+          if (first instanceof HTMLElement) first.focus();
+        }
+      }
+    }
+
+    function onOutside(e) {
+      if (!root) return;
+      if (!root.contains(e.target)) closeMenu();
+    }
+
+    if (button) {
+      button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        if (expanded) closeMenu();
+        else openMenu();
+      });
+    }
+  </script>
+</div>

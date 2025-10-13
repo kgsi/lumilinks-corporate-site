@@ -63,25 +63,34 @@ import ThemeSwitch from './ThemeSwitch.astro';
         <a
           href="/"
           class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/' ? 'page' : undefined}
+          aria-current={Astro.url.pathname === '/' && 'page'}
         >
-          TOP
+          ホーム
         </a>
       </li>
       <li>
         <a
           href="/about"
           class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/about' ? 'page' : undefined}
+          aria-current={Astro.url.pathname === '/about' && 'page'}
         >
           会社概要
         </a>
       </li>
       <li>
         <a
+          href="/news"
+          class="underline hover:no-underline"
+          aria-current={Astro.url.pathname === '/news' && 'page'}
+        >
+          お知らせ
+        </a>
+      </li>
+      <li>
+        <a
           href="/contact"
           class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/contact' ? 'page' : undefined}
+          aria-current={Astro.url.pathname === '/contact' && 'page'}
         >
           お問い合わせ
         </a>
