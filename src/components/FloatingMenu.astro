@@ -40,7 +40,7 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
 
 <div
   id="floating-menu"
-  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-10 select-none sm:bottom-10 sm:left-auto sm:right-10 sm:translate-x-0"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-10 select-none opacity-0 pointer-events-none translate-y-2 sm:opacity-100 sm:pointer-events-auto sm:translate-y-0 sm:bottom-10 sm:left-auto sm:right-10 sm:translate-x-0"
 >
   <div class="relative">
     <button
@@ -105,6 +105,56 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
 
     const chevron = button?.querySelector('svg');
     const getItems = () => panel?.querySelectorAll('.js-menu-item');
+
+    // --- Mobile only: reveal floating menu after user scrolls ---
+    const MOBILE_SHOW_Y = 120; // px threshold to show
+    const MOBILE_HIDE_Y = 20; // px threshold to hide again near top
+    let isMobileVisible = false;
+
+    function isMobileViewport() {
+      return window.matchMedia('(max-width: 639.98px)').matches; // Tailwind sm breakpoint
+    }
+
+    function showFloating() {
+      if (!root || isMobileVisible) return;
+      isMobileVisible = true;
+      if (button) button.tabIndex = 0;
+      animate(
+        root,
+        { opacity: [0, 1], y: [8, 0] },
+        { duration: 0.25, easing: 'ease-out' }
+      );
+      root.style.pointerEvents = 'auto';
+    }
+
+    function hideFloating() {
+      if (!root || !isMobileVisible) return;
+      isMobileVisible = false;
+      if (button) button.tabIndex = -1;
+      closeMenu();
+      animate(
+        root,
+        { opacity: [1, 0], y: [0, 8] },
+        { duration: 0.2, easing: 'ease-in' }
+      );
+      root.style.pointerEvents = 'none';
+    }
+
+    function updateFloatingVisibility() {
+      if (!root || !button) return;
+      if (isMobileViewport()) {
+        const y = window.scrollY || window.pageYOffset;
+        if (y > MOBILE_SHOW_Y) showFloating();
+        else if (y < MOBILE_HIDE_Y) hideFloating();
+      } else {
+        // Desktop: ensure visible immediately
+        isMobileVisible = true;
+        root.style.opacity = '';
+        root.style.transform = '';
+        root.style.pointerEvents = 'auto';
+        button.tabIndex = 0;
+      }
+    }
 
     async function openMenu() {
       if (!panel || !button) return;
@@ -202,5 +252,12 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
         else openMenu();
       });
     }
+
+    // Initialize visibility state and listeners
+    updateFloatingVisibility();
+    window.addEventListener('scroll', updateFloatingVisibility, {
+      passive: true,
+    });
+    window.addEventListener('resize', updateFloatingVisibility);
   </script>
 </div>
