@@ -11,6 +11,31 @@ const isActive = (href: string) => {
   if (target === '/') return currentPath === '/';
   return currentPath === target || currentPath.startsWith(target + '/');
 };
+
+type IconName = 'home' | 'info' | 'doc' | 'mail';
+const iconSvg = (name: IconName) => {
+  switch (name) {
+    case 'home':
+      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7"></path><path d="M9 22V12h6v10"></path></svg>`;
+    case 'info':
+      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>`;
+    case 'doc':
+      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V4a2 2 0 0 1 2-2h9l5 5v12.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M14 2v6h6"></path></svg>`;
+    case 'mail':
+      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><path d="M3 7l9 6 9-6"></path></svg>`;
+  }
+};
+
+const links: Array<{ href: string; label: string; icon: IconName }> = [
+  { href: '/', label: 'ホーム', icon: 'home' },
+  { href: '/about', label: '会社概要', icon: 'info' },
+  { href: '/news', label: 'お知らせ', icon: 'doc' },
+  { href: '/contact', label: 'お問い合わせ', icon: 'mail' },
+];
+
+const baseLinkClass =
+  'js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1.125rem] sm:text-[1.5rem]';
+const activeClass = 'bg-white/10 ring-2 ring-white/40';
 ---
 
 <div
@@ -21,7 +46,7 @@ const isActive = (href: string) => {
     <button
       id="floating-menu-button"
       type="button"
-      class="flex items-center justify-center gap-2 py-2.5 px-5 sm:py-4 sm:px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500 text-[1rem] sm:text-[1.5rem]"
+      class="flex items-center justify-center gap-2 py-3 px-6 sm:py-4 sm:px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500 text-[1.125rem] sm:text-[1.5rem]"
       aria-label="メニュー"
       aria-haspopup="menu"
       aria-expanded="false"
@@ -46,118 +71,28 @@ const isActive = (href: string) => {
 
     <div
       id="floating-menu-panel"
-      class="absolute bottom-20 left-1/2 -translate-x-1/2 w-56 sm:bottom-24 sm:left-auto sm:right-0 sm:translate-x-0 sm:w-64 rounded-2xl bg-neutral-800 text-white shadow-2xl ring-1 ring-white/10 p-3 hidden"
+      class="absolute bottom-20 left-1/2 -translate-x-1/2 w-60 sm:bottom-24 sm:left-auto sm:right-0 sm:translate-x-0 sm:w-64 rounded-2xl bg-neutral-800 text-white shadow-2xl ring-1 ring-white/10 p-3 hidden"
       role="menu"
       aria-labelledby="floating-menu-button"
     >
       <ul class="flex flex-col gap-2">
-        <li>
-          <a
-            href="/"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
-              isActive('/') ? 'bg-white/10 ring-2 ring-white/40' : ''
-            }`}
-            role="menuitem"
-            aria-current={isActive('/') && 'page'}
-          >
-            <span>ホーム</span>
-            <!-- home icon -->
-            <svg
-              class="h-4 w-4 sm:h-5 sm:w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M3 9l9-7 9 7"></path>
-              <path d="M9 22V12h6v10"></path>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a
-            href="/about"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
-              isActive('/about') ? 'bg-white/10 ring-2 ring-white/40' : ''
-            }`}
-            role="menuitem"
-            aria-current={isActive('/about') && 'page'}
-          >
-            <span>会社概要</span>
-            <!-- info icon -->
-            <svg
-              class="h-4 w-4 sm:h-5 sm:w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 16v-4"></path>
-              <path d="M12 8h.01"></path>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a
-            href="/news"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
-              isActive('/news') ? 'bg-white/10 ring-2 ring-white/40' : ''
-            }`}
-            role="menuitem"
-            aria-current={isActive('/news') && 'page'}
-          >
-            <span>お知らせ</span>
-            <!-- document icon -->
-            <svg
-              class="h-4 w-4 sm:h-5 sm:w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M4 19.5V4a2 2 0 0 1 2-2h9l5 5v12.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"
-              ></path>
-              <path d="M14 2v6h6"></path>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a
-            href="/contact"
-            class={`js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1rem] sm:text-[1.5rem] ${
-              isActive('/contact') ? 'bg-white/10 ring-2 ring-white/40' : ''
-            }`}
-            role="menuitem"
-            aria-current={isActive('/contact') && 'page'}
-          >
-            <span>お問い合わせ</span>
-            <!-- mail icon -->
-            <svg
-              class="h-4 w-4 sm:h-5 sm:w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
-              <path d="M3 7l9 6 9-6"></path>
-            </svg>
-          </a>
-        </li>
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class={`${baseLinkClass} ${
+                  isActive(link.href) ? activeClass : ''
+                }`}
+                role="menuitem"
+                aria-current={isActive(link.href) && 'page'}
+              >
+                <span>{link.label}</span>
+                <span aria-hidden="true" set:html={iconSvg(link.icon)} />
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </div>
