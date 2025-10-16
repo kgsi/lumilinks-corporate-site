@@ -146,7 +146,7 @@ const newsPosts: NewsMeta[] = newsCollection
             newsPosts.map((post) => (
               <article>
                 <a href={post.url} class="underline hover:no-underline">
-                  <h3 class="text-2xl font-normal">{post.title}</h3>
+                  <h3 class="text-2xl">{post.title}</h3>
                 </a>
                 {post.pubDate && (
                   <p class="text-gray-500 dark:text-gray-400 text-lg">
