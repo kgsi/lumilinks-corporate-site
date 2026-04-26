@@ -40,7 +40,7 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
 
 <div
   id="floating-menu"
-  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-10 select-none opacity-0 pointer-events-none translate-y-2 sm:opacity-100 sm:pointer-events-auto sm:translate-y-0 sm:bottom-10 sm:left-auto sm:right-10 sm:translate-x-0"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-10 select-none opacity-0 pointer-events-none translate-y-2 sm:hidden"
 >
   <div class="relative">
     <button
@@ -142,18 +142,10 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
 
     function updateFloatingVisibility() {
       if (!root || !button) return;
-      if (isMobileViewport()) {
-        const y = window.scrollY || window.pageYOffset;
-        if (y > MOBILE_SHOW_Y) showFloating();
-        else if (y < MOBILE_HIDE_Y) hideFloating();
-      } else {
-        // Desktop: ensure visible immediately
-        isMobileVisible = true;
-        root.style.opacity = '';
-        root.style.transform = '';
-        root.style.pointerEvents = 'auto';
-        button.tabIndex = 0;
-      }
+      if (!isMobileViewport()) return;
+      const y = window.scrollY || window.pageYOffset;
+      if (y > MOBILE_SHOW_Y) showFloating();
+      else if (y < MOBILE_HIDE_Y) hideFloating();
     }
 
     async function openMenu() {
