@@ -18,8 +18,8 @@ const posts: PostMeta[] = allPosts
     url: `/news/${post.slug}`,
   }))
   .sort((a, b) => {
-    const ad = a.url.match(/(\\d{4}-\\d{2}-\\d{2})/);
-    const bd = b.url.match(/(\\d{4}-\\d{2}-\\d{2})/);
+    const ad = a.url.match(/(\d{4}-\d{2}-\d{2})/);
+    const bd = b.url.match(/(\d{4}-\d{2}-\d{2})/);
     if (!ad && !bd) return 0;
     if (!ad) return 1;
     if (!bd) return -1;
