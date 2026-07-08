@@ -9,13 +9,33 @@ export default {
 
   // HTTPリクエストでも手動実行できるようにする
   async fetch(request, env, ctx) {
+    if (request.method !== 'POST') {
+      return new Response('Method Not Allowed', {
+        status: 405,
+        headers: { Allow: 'POST' },
+      });
+    }
+
+    if (!isAuthorized(request, env)) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
     return await checkRSSAndTriggerBuild(env)
       .then(() => new Response('Build triggered successfully', { status: 200 }))
-      .catch(
-        (error) => new Response(`Error: ${error.message}`, { status: 500 })
-      );
+      .catch((error) => {
+        console.error('Manual build trigger failed:', error);
+        return new Response('Internal Server Error', { status: 500 });
+      });
   },
 };
+
+function isAuthorized(request, env) {
+  const token = env.MANUAL_TRIGGER_TOKEN;
+  if (!token) return false;
+
+  const authorization = request.headers.get('Authorization');
+  return authorization === `Bearer ${token}`;
+}
 
 async function checkRSSAndTriggerBuild(env) {
   try {
@@ -39,6 +59,9 @@ async function checkRSSAndTriggerBuild(env) {
 
       // デプロイフックを使用してビルドをトリガー
       const deployHookUrl = env.DEPLOY_HOOK_URL;
+      if (!deployHookUrl) {
+        throw new Error('DEPLOY_HOOK_URL is not configured');
+      }
 
       const deployResponse = await fetch(deployHookUrl, {
         method: 'POST',

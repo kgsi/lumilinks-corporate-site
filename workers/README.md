@@ -35,14 +35,21 @@ wrangler kv:namespace create RSS_MONITOR
 7. 「保存」をクリックします
 8. 生成されたデプロイフックURLをコピーします
 
-コピーしたデプロイフックURLを`wrangler.toml`の`DEPLOY_HOOK_URL`に設定します：
+コピーしたデプロイフックURLをWorkerのsecretとして設定します：
 
-```toml
-[vars]
-DEPLOY_HOOK_URL = "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/YOUR_DEPLOY_HOOK_ID"
+```bash
+wrangler secret put DEPLOY_HOOK_URL
 ```
 
-### 5. Workerのデプロイ
+### 5. 手動実行用トークンの設定
+
+HTTP経由で手動実行する場合に使う任意の長い文字列を設定します。
+
+```bash
+wrangler secret put MANUAL_TRIGGER_TOKEN
+```
+
+### 6. Workerのデプロイ
 
 ```bash
 wrangler deploy
@@ -53,10 +60,13 @@ wrangler deploy
 Workerが正しくデプロイされたら、以下のコマンドで手動実行できます：
 
 ```bash
-curl https://rss-trigger-build.{WORKER_SUBDOMAIN}.workers.dev
+curl -X POST \
+  -H "Authorization: Bearer ${MANUAL_TRIGGER_TOKEN}" \
+  https://rss-trigger-build.{WORKER_SUBDOMAIN}.workers.dev
 ```
 
-- `{WORKER_SUBDOMAIN}` はデプロイ後に表示される、あなたのWorkerのサブドメイン名です。通常はCloudflareアカウント名またはランダムな文字列になります。デプロイ後に表示されるURLを使用してください。-正常に動作すると、「Build triggered successfully」というメッセージが表示されます。
+- `{WORKER_SUBDOMAIN}` はデプロイ後に表示される、あなたのWorkerのサブドメイン名です。通常はCloudflareアカウント名またはランダムな文字列になります。デプロイ後に表示されるURLを使用してください。
+- 正常に動作すると、「Build triggered successfully」というメッセージが表示されます。
 
 ## 注意事項
 

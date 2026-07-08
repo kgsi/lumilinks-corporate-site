@@ -11,6 +11,17 @@ export interface NoteArticle {
   thumbnail?: string;
 }
 
+function getSafeUrl(url: string | undefined): string {
+  if (!url) return '';
+
+  try {
+    const parsed = new URL(url);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+  } catch {
+    return '';
+  }
+}
+
 // RSSフィードからデータを取得する関数
 export async function getNoteArticles(rssUrl: string): Promise<NoteArticle[]> {
   try {
@@ -26,40 +37,42 @@ export async function getNoteArticles(rssUrl: string): Promise<NoteArticle[]> {
     const feed = await parser.parseURL(rssUrl);
     console.log('RSSフィード取得成功:', feed.title);
 
-    return feed.items.map((item) => {
-      // サムネイル取得の方法を修正
-      let thumbnail = undefined;
+    return feed.items
+      .map<NoteArticle>((item) => {
+        // サムネイル取得の方法を修正
+        let thumbnail = undefined;
 
-      // media:thumbnailから取得を試みる
-      if (item.mediaThumbnail && typeof item.mediaThumbnail === 'object') {
-        thumbnail = item.mediaThumbnail.$
-          ? item.mediaThumbnail.$.url
-          : undefined;
-      }
-
-      // enclosureから取得を試みる
-      if (!thumbnail && item.enclosure && item.enclosure.url) {
-        thumbnail = item.enclosure.url;
-      }
-
-      // contentから画像URLを抽出する試み
-      if (!thumbnail && item.content) {
-        const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/i);
-        if (imgMatch && imgMatch[1]) {
-          thumbnail = imgMatch[1];
+        // media:thumbnailから取得を試みる
+        if (item.mediaThumbnail && typeof item.mediaThumbnail === 'object') {
+          thumbnail = item.mediaThumbnail.$
+            ? item.mediaThumbnail.$.url
+            : undefined;
         }
-      }
 
-      return {
-        title: item.title || '',
-        link: item.link || '',
-        pubDate: item.pubDate || '',
-        content: item.content || '',
-        contentSnippet: item.contentSnippet || '',
-        categories: item.categories,
-        thumbnail: thumbnail,
-      };
-    }) as NoteArticle[];
+        // enclosureから取得を試みる
+        if (!thumbnail && item.enclosure && item.enclosure.url) {
+          thumbnail = item.enclosure.url;
+        }
+
+        // contentから画像URLを抽出する試み
+        if (!thumbnail && item.content) {
+          const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/i);
+          if (imgMatch && imgMatch[1]) {
+            thumbnail = imgMatch[1];
+          }
+        }
+
+        return {
+          title: item.title || '',
+          link: getSafeUrl(item.link),
+          pubDate: item.pubDate || '',
+          content: item.content || '',
+          contentSnippet: item.contentSnippet || '',
+          categories: item.categories,
+          thumbnail: thumbnail,
+        };
+      })
+      .filter((item) => item.link);
   } catch (error) {
     console.error('RSSフィードの取得に失敗しました:', error);
     return [];

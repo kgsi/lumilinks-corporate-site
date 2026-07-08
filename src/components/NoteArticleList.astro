@@ -16,7 +16,12 @@ const displayedArticles = limit ? articles.slice(0, limit) : articles;
   {
     displayedArticles.map((article) => (
       <article>
-        <a href={article.link} target="_blank" class="note-article-link">
+        <a
+          href={article.link}
+          target="_blank"
+          rel="noopener"
+          class="note-article-link"
+        >
           <div class="note-article-content">
             <h3 class="note-article-title underline hover:no-underline">
               {article.title}

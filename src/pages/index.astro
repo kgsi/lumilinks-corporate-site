@@ -25,7 +25,7 @@ const newsPosts: NewsMeta[] = newsCollection
     title: post.data.title,
     description: post.data.description,
     pubDate: post.data.pubDate,
-    url: `/news/${post.slug}`,
+    url: `/news/${post.id.replace(/\.md$/, '')}`,
   }))
   .sort((a, b) => {
     const ad = a.url.match(/(\d{4}-\d{2}-\d{2})/);
@@ -132,6 +132,51 @@ const newsPosts: NewsMeta[] = newsCollection
             height={400}
             loading="lazy"
             decoding="async"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://design-harness.com/"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">Design Harness</a
+            >
+          </h3>
+          <p>
+            「Design
+            Harness」は、AIエージェントと協働しながらデザインプロセスを前に進めるための考え方を紹介するサイトです。制約・文脈・検証・評価の4層モデルを軸に、AI時代のデザインの仕組み化を扱っています。
+          </p>
+          <img
+            src="https://design-harness.com/assets/og-image.jpg"
+            alt="Design Harnessのキービジュアル"
+            width="800"
+            height="420"
+            loading="lazy"
+            decoding="async"
+            class="w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://parascope.design/"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">Parascope</a
+            >
+          </h3>
+          <p>
+            「Parascope」は、エンジニアやPMなど、あらゆるつくる人にデザインの視点を届けるキュレーションサイトです。デザインスキルを身につけるためのリソースを収集・整理しています。
+          </p>
+          <img
+            src="https://parascope.design/og-main.png"
+            alt="Parascopeのキービジュアル"
+            width="800"
+            height="420"
+            loading="lazy"
+            decoding="async"
+            class="w-full"
           />
         </div>
       </div>
