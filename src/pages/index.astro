@@ -1,16 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import NoteArticleList from '../components/NoteArticleList.astro';
-import { getNoteArticles } from '../utils/note-rss';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import GlobalHeader from '../components/GlobalHeader.astro';
 
 import imageCrossRel from '../assets/crossrel.png';
 import imageDesignerMentor from '../assets/designer-mentor.png';
-
-const NOTE_RSS_URL = 'https://note.com/kgsi/rss';
-const noteArticles = await getNoteArticles(NOTE_RSS_URL);
 
 // お知らせ（content collection）を取得して最新順に整形
 type NewsMeta = {
@@ -35,7 +30,7 @@ const newsPosts: NewsMeta[] = newsCollection
     if (!bd) return -1;
     return ad[1] > bd[1] ? -1 : 1;
   })
-  .slice(0, 3);
+  .slice(0, 5);
 ---
 
 <Layout>
@@ -51,7 +46,7 @@ const newsPosts: NewsMeta[] = newsCollection
             />会社です。
           </h1>
           <p class="text-3xl leading-relaxed">
-            Lumilinks（ルミリンクス）はデザイナーのこぎそが運営する小さな会社です。デザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。
+            Lumilinksはデザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。
           </p>
         </div>
       </div>
@@ -67,16 +62,9 @@ const newsPosts: NewsMeta[] = newsCollection
           </p>
         </div>
         <div class="flex flex-col gap-4">
-          <h3 class="text-4xl font-normal">デザイン顧問</h3>
+          <h3 class="text-4xl font-normal">組織と仕組みへの支援</h3>
           <p>
-            デザインプロセスの効率化や、組織構築支援などをサポートするコンサルティングサービスを提供します。デザインシステムの構築・運用における豊富な経験を活かし、一貫性のあるユーザー体験の実現をサポート。デザイナーの責任領域の定義やフィードバック体制の確立、フェーズに合わせた品質と速度のバランス調整、組織のデザイン力を高めるための包括的なアドバイスを行います。
-          </p>
-        </div>
-        <div class="flex flex-col gap-4">
-          <h3 class="text-4xl font-normal">デザイナーメンター・教育サポート</h3>
-          <p>
-            15年以上のデザイナー経験を活かして、デザイナーの成長をサポートするメンターサービスやカリキュラムを提供しています。
-            メンティーのスキルや経験を考慮し、最適なフィードバックとキャリアサポートを行います。
+            10年以上のデザイン組織運営の知見と、最新AIツールの実践知を掛け合わせ、組織の"つくり方"そのものをアップデートする支援を行います。
           </p>
         </div>
         <div class="flex flex-col gap-4">
@@ -202,12 +190,6 @@ const newsPosts: NewsMeta[] = newsCollection
             ))
           )
         }
-      </div>
-    </section>
-    <section class="flex flex-col gap-8">
-      <h2 class="font-semibold">記事:</h2>
-      <div>
-        <NoteArticleList articles={noteArticles} limit={6} />
       </div>
     </section>
   </div>
