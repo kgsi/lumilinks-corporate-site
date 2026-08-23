@@ -19,7 +19,13 @@ export default defineConfig({
     sitemap(),
     compress({
       // Adjusted to match astro-compress option names per typings
-      CSS: true,
+      // CSSはfalse固定。astro-compressが内部で使うcssoは
+      // Tailwind v4が出力する @media (width >= 40rem) 形式
+      // （Media Queries Level 4のレンジ構文）をパースできず、
+      // メディアクエリブロックを丸ごと削除してしまうため。
+      // 有効にするとsm:/lg:などのレスポンシブスタイルが本番で全て失われる。
+      // CSSはVite側のminifyで既に圧縮済み。
+      CSS: false,
       HTML: true,
       Image: true,
       JavaScript: true,
