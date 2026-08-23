@@ -12,7 +12,8 @@
     "astro": "astro",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "brand:assets": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.7",
@@ -22,7 +23,6 @@
     "astro-compress": "^2.4.1",
     "astro-icon": "^1.1.5",
     "motion": "^12.42.2",
-    "rss-parser": "^3.13.0",
     "sharp": "^0.35.3"
   },
   "devDependencies": {

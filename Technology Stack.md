@@ -24,10 +24,6 @@
 - Autoprefixer: ^10.4.20
 - PostCSS: ^8.5.3
 
-## その他
-
-- RSS-Parser: ^3.13.0
-
 ---
 
 ## 実装規則
