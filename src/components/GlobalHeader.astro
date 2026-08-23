@@ -3,8 +3,15 @@ import ThemeSwitch from './ThemeSwitch.astro';
 ---
 
 <header class="flex gap-6 flex-col">
-  <div class="w-[160px]">
-    <a href="/" aria-label="Lumilinks">
+  <div class="w-[160px] relative" data-brand-menu>
+    <a
+      href="/"
+      data-brand-trigger
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-label="Lumilinks — ホーム（右クリックでロゴアセットのメニューを開く）"
+      class="block w-full transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
+    >
       <svg
         width="100%"
         height="100%"
@@ -53,6 +60,87 @@ import ThemeSwitch from './ThemeSwitch.astro';
           fill="currentColor"></rect>
       </svg>
     </a>
+
+    <div
+      data-brand-popover
+      hidden
+      role="menu"
+      aria-label="ロゴアセット"
+      class="absolute top-[calc(100%+0.75rem)] left-0 z-50 w-[20rem] rounded-xl border border-black/10 bg-white p-2 text-lg leading-normal shadow-xl shadow-black/10 dark:border-white/15 dark:bg-neutral-900 dark:shadow-black/60"
+    >
+      <button
+        type="button"
+        role="menuitem"
+        data-brand-copy
+        class="group block w-full cursor-pointer rounded-lg p-1 text-center focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current"
+      >
+        <span
+          class="flex h-24 items-center justify-center rounded-lg bg-black/5 px-8 transition-colors group-hover:bg-black/10 dark:bg-white/5 dark:group-hover:bg-white/10"
+        >
+          <span
+            data-brand-preview
+            class="block h-8 w-full text-black dark:text-white"
+            aria-hidden="true"></span>
+        </span>
+        <span
+          data-brand-copy-label
+          class="mt-2 mb-1 block text-gray-600 dark:text-gray-400"
+          >ロゴをコピー</span
+        >
+      </button>
+
+      <a
+        role="menuitem"
+        data-brand-download="svg"
+        href="/brand/lumilinks-logo-black.svg"
+        download="lumilinks-logo-black.svg"
+        class="flex items-center gap-2.5 rounded-lg px-3 py-2 hover:bg-black/5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current dark:hover:bg-white/10"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-5 shrink-0 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+        >
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        SVGをダウンロード
+      </a>
+      <a
+        role="menuitem"
+        data-brand-download="png"
+        href="/brand/lumilinks-logo-black.png"
+        download="lumilinks-logo-black.png"
+        class="flex items-center gap-2.5 rounded-lg px-3 py-2 hover:bg-black/5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current dark:hover:bg-white/10"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-5 shrink-0 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+        >
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+        </svg>
+        PNGをダウンロード
+      </a>
+      <p
+        class="px-3 pt-1.5 pb-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400"
+      >
+        現在のテーマに合わせた配色（ライト＝黒／ダーク＝白）で書き出します。
+      </p>
+    </div>
   </div>
   <nav
     class="flex sm:items-center flex-wrap flex-col sm:flex-row gap-6 sm:gap-12"
@@ -99,3 +187,169 @@ import ThemeSwitch from './ThemeSwitch.astro';
     <ThemeSwitch />
   </nav>
 </header>
+
+<script>
+  // ロゴの右クリックでブランドアセットのメニューを開閉する
+  const BRAND_ASSETS = {
+    light: {
+      svg: '/brand/lumilinks-logo-black.svg',
+      png: '/brand/lumilinks-logo-black.png',
+    },
+    dark: {
+      svg: '/brand/lumilinks-logo-white.svg',
+      png: '/brand/lumilinks-logo-white.png',
+    },
+  } as const;
+
+  const COPY_LABEL = 'ロゴをコピー';
+
+  const menu = document.querySelector<HTMLElement>('[data-brand-menu]');
+  const trigger = menu?.querySelector<HTMLAnchorElement>(
+    '[data-brand-trigger]'
+  );
+  const popover = menu?.querySelector<HTMLElement>('[data-brand-popover]');
+
+  if (menu && trigger && popover) {
+    const currentTheme = () =>
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+
+    const items = () => [
+      ...popover.querySelectorAll<HTMLElement>('[role="menuitem"]'),
+    ];
+
+    // テーマに応じてダウンロードリンクの参照先を差し替える
+    const syncLinks = () => {
+      const assets = BRAND_ASSETS[currentTheme()];
+      popover
+        .querySelectorAll<HTMLAnchorElement>('[data-brand-download]')
+        .forEach((link) => {
+          const format = link.dataset.brandDownload as 'svg' | 'png';
+          const path = assets[format];
+          link.href = path;
+          link.download = path.slice(path.lastIndexOf('/') + 1);
+        });
+    };
+
+    // プレビュー枠にはヘッダーのロゴをそのまま複製して置く
+    const fillPreview = () => {
+      const preview = popover.querySelector<HTMLElement>(
+        '[data-brand-preview]'
+      );
+      const logo = trigger.querySelector('svg');
+      if (!preview || !logo || preview.firstElementChild) return;
+      preview.append(logo.cloneNode(true));
+    };
+
+    const open = () => {
+      fillPreview();
+      syncLinks();
+      popover.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      items()[0]?.focus();
+    };
+
+    const close = (returnFocus = false) => {
+      popover.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (returnFocus) trigger.focus();
+    };
+
+    // 右クリック（コンテキストメニューキーも含む）で開く。
+    // 左クリックはホームへのリンクとしてそのまま通す。
+    trigger.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      if (popover.hidden) open();
+      else close();
+    });
+
+    // 外側のクリック・右クリックで閉じる
+    const closeOnOutside = (event: MouseEvent) => {
+      if (!popover.hidden && !menu.contains(event.target as Node)) close();
+    };
+    document.addEventListener('click', closeOnOutside);
+    document.addEventListener('contextmenu', closeOnOutside);
+
+    // Escapeで閉じる
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !popover.hidden) close(true);
+    });
+
+    // 上下キーでメニュー項目を移動
+    popover.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+      event.preventDefault();
+      const list = items();
+      const index = list.indexOf(document.activeElement as HTMLElement);
+      const next = event.key === 'ArrowDown' ? index + 1 : index - 1;
+      list[(next + list.length) % list.length]?.focus();
+    });
+
+    // ヘッダーのSVGから配布用のソースを組み立てる。
+    // fetchを挟むとSafariでクリップボードの一時的な許可が切れるため、
+    // クリック直後に同期的に文字列を作ってからwriteTextへ渡す。
+    const buildSvgSource = () => {
+      const origin = trigger.querySelector('svg');
+      if (!origin) return '';
+
+      const clone = origin.cloneNode(true) as SVGElement;
+      clone.setAttribute('width', '179');
+      clone.setAttribute('height', '34');
+      clone.setAttribute('role', 'img');
+      clone.setAttribute('aria-label', 'Lumilinks');
+      clone.removeAttribute('class');
+      clone.removeAttribute('aria-hidden');
+      clone.removeAttribute('preserveAspectRatio');
+
+      const color = currentTheme() === 'dark' ? '#ffffff' : '#000000';
+      clone
+        .querySelectorAll('[fill="currentColor"]')
+        .forEach((node) => node.setAttribute('fill', color));
+
+      const title = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'title'
+      );
+      title.textContent = 'Lumilinks';
+      clone.prepend(title);
+
+      return clone.outerHTML;
+    };
+
+    // SVGソースをクリップボードへ
+    const copyButton =
+      popover.querySelector<HTMLButtonElement>('[data-brand-copy]');
+    const copyLabel = popover.querySelector<HTMLElement>(
+      '[data-brand-copy-label]'
+    );
+
+    copyButton?.addEventListener('click', () => {
+      if (!copyLabel) return;
+
+      const notify = (message: string) => {
+        copyLabel.textContent = message;
+        window.setTimeout(() => {
+          copyLabel.textContent = COPY_LABEL;
+        }, 2000);
+      };
+
+      const source = buildSvgSource();
+      if (!source || !navigator.clipboard) {
+        notify('コピーできませんでした');
+        return;
+      }
+
+      navigator.clipboard.writeText(source).then(
+        () => notify('コピーしました'),
+        () => notify('コピーできませんでした')
+      );
+    });
+
+    // テーマ切り替えに追従
+    new MutationObserver(syncLinks).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    syncLinks();
+  }
+</script>

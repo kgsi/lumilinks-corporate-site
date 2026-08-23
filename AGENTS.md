@@ -9,10 +9,11 @@
 - `src/pages/` Astro pages (routing), e.g., `src/pages/index.astro`.
 - `src/components/` Reusable Astro components, PascalCase (e.g., `GlobalHeader.astro`).
 - `src/layouts/` Shared page layouts.
-- `src/utils/` TypeScript utilities (e.g., RSS parsing).
 - `src/css/` Global styles (Tailwind v4 entry in `global.css`).
 - `public/` Static assets served as-is.
-- `workers/` Cloudflare Worker for RSS-triggered rebuilds (`wrangler.toml.example`).
+- `public/brand/` ロゴ配布用アセット。`GlobalHeader.astro` のインライン SVG が原本で、
+  ロゴを差し替えたら `npm run brand:assets` で再生成する（手で編集しない）。
+- `scripts/` ビルド外のワンショットスクリプト（例: `generate-brand-assets.mjs`）。
 
 ## Build, Test, and Development Commands
 
@@ -21,11 +22,12 @@
 - `npm run preview` Preview the built site locally.
 - `npm run lint` Check formatting with Prettier.
 - `npm run format` Apply Prettier fixes.
+- `npm run brand:assets` Regenerate `public/brand/` logo files from `GlobalHeader.astro`.
 
 ## Coding Style & Naming Conventions
 
 - Prettier enforced: 2 spaces, single quotes, semicolons, width 80, trailing commas (es5). See `.prettierrc`.
-- Astro components: PascalCase (e.g., `NoteArticleList.astro`). Utility modules: camelCase exports.
+- Astro components: PascalCase (e.g., `GlobalHeader.astro`). Utility modules: camelCase exports.
 - Pages and assets: kebab-case file names in `public/` when possible.
 - Tailwind v4 via `@tailwindcss/vite`; prefer utility classes; use the `dark` custom variant defined in `global.css`.
 
@@ -44,5 +46,4 @@
 ## Security & Configuration Tips
 
 - Copy `.env.example` to `.env` as needed; never commit secrets.
-- For Workers, duplicate `workers/wrangler.toml.example` and configure `RSS_MONITOR` KV and `DEPLOY_HOOK_URL` before `wrangler deploy`.
 - Keep `astro.config.mjs` `site` accurate for sitemap and URLs.
