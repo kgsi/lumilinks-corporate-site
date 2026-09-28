@@ -53,6 +53,20 @@ body {
   color: var(--text-primary);
 }
 
+/* Webフォントの読み込み中は本文を隠す（Layout.astro のスクリプトが付け外しする）。
+   body の背景色はキャンバスに引き継がれるので、画面は白／黒のまま中身だけが消える。
+   解除時は body の duration-300（transition-property は初期値の all）でフェードインする。
+   ここで transition を書くとテーマ切替の背景色アニメーションが消えるので書かない */
+html.fonts-loading body {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition-duration: 0s;
+  }
+}
+
 /* リンクの下線を文字から少し離す（本文・ナビ・記事内すべてに効く） */
 a {
   text-underline-offset: 0.2em;

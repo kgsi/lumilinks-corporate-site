@@ -70,6 +70,27 @@ const enHref = new URL(withTrailingSlash(localizePath('en', enPath)), site)
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline>
+      // Webフォントは文字範囲ごとに分割配信されていて、差し替えが文字ごとにバラバラに起きるため、
+      // 読み込みが終わるまで本文を隠す（最大2秒）。隠し方は global.css の .fonts-loading を参照
+      (() => {
+        if (!('fonts' in document)) return;
+        const root = document.documentElement;
+        root.classList.add('fonts-loading');
+        const timeout = new Promise((resolve) => setTimeout(resolve, 2000));
+        const fontsLoaded = new Promise((resolve) => {
+          document.addEventListener('DOMContentLoaded', () => {
+            // レイアウトを確定させると、ページで使う文字のフォント読み込みが始まる。
+            // これをしないと document.fonts.ready が読み込み開始前に解決してしまう
+            document.body.getBoundingClientRect();
+            document.fonts.ready.then(resolve);
+          });
+        });
+        Promise.race([fontsLoaded, timeout]).then(() =>
+          root.classList.remove('fonts-loading')
+        );
+      })();
+    </script>
     <!-- Gen Interface JP: 本文300 / font-normal 400 / font-semibold 600 のみ読み込む -->
     <link
       href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.8.0/cdn/300.css"
