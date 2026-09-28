@@ -1,20 +1,20 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import NewsPostLayout from '../../layouts/NewsPostLayout.astro';
-import { newsSlug } from '../../i18n/ui';
+import NewsPostLayout from '../../../layouts/NewsPostLayout.astro';
+import { newsSlug } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('news');
-  // 英語版が存在する記事だけ、言語切替で同じ記事へ飛ばす
-  const enIds = new Set((await getCollection('newsEn')).map((p) => p.id));
-  return posts.map((post: CollectionEntry<'news'>) => ({
+  const posts = await getCollection('newsEn');
+  // 日本語版が存在する記事だけ、言語切替で同じ記事へ飛ばす
+  const jaIds = new Set((await getCollection('news')).map((p) => p.id));
+  return posts.map((post: CollectionEntry<'newsEn'>) => ({
     params: { slug: newsSlug(post.id) },
-    props: { post, hasTranslation: enIds.has(post.id) },
+    props: { post, hasTranslation: jaIds.has(post.id) },
   }));
 }
 
 const { post, hasTranslation } = Astro.props as {
-  post: CollectionEntry<'news'>;
+  post: CollectionEntry<'newsEn'>;
   hasTranslation: boolean;
 };
 const { Content } = await render(post);

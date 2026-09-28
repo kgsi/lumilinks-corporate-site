@@ -1,15 +1,42 @@
 ---
-import ThemeSwitch from './ThemeSwitch.astro';
+import SiteControls from './SiteControls.astro';
+import { localizePath, resolveLocale, stripLocale, t } from '../i18n/ui';
+
+interface Props {
+  /** もう一方の言語に対応ページがない場合の飛び先（例: /en/news） */
+  alternatePath?: string;
+}
+
+const { alternatePath } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
+const { nav, brand } = t(locale);
+
+// ロケール接頭辞を外したパスで現在地を判定する
+const currentPath = stripLocale(Astro.url.pathname);
+const isCurrent = (path: string) => currentPath === path;
+
+const navLinks = [
+  { href: '/', label: nav.home },
+  { href: '/about', label: nav.about },
+  { href: '/news', label: nav.news },
+  { href: '/contact', label: nav.contact },
+];
 ---
 
-<header class="flex gap-6 flex-col">
-  <div class="w-[160px] relative" data-brand-menu>
+<!--
+  スマホ幅ではロゴ→メニュー→切替ボタンの順に縦積み。
+  sm以上ではロゴ行の右端に切替ボタンを置き、メニューは幅いっぱいで2行目に回す（order で並び替え）。
+-->
+<header
+  class="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
+>
+  <div class="w-[160px] relative order-1" data-brand-menu>
     <a
-      href="/"
+      href={localizePath(locale, '/')}
       data-brand-trigger
       aria-haspopup="menu"
       aria-expanded="false"
-      aria-label="Lumilinks — ホーム（右クリックでロゴアセットのメニューを開く）"
+      aria-label={brand.logoAria}
       class="block w-full transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
     >
       <svg
@@ -65,7 +92,10 @@ import ThemeSwitch from './ThemeSwitch.astro';
       data-brand-popover
       hidden
       role="menu"
-      aria-label="ロゴアセット"
+      aria-label={brand.menuLabel}
+      data-copy-label={brand.copy}
+      data-copied-label={brand.copied}
+      data-copy-failed-label={brand.copyFailed}
       class="absolute top-[calc(100%+0.75rem)] left-0 z-50 w-[20rem] rounded-xl border border-black/10 bg-white p-2 text-lg leading-normal shadow-xl shadow-black/10 dark:border-white/15 dark:bg-neutral-900 dark:shadow-black/60"
     >
       <button
@@ -85,7 +115,7 @@ import ThemeSwitch from './ThemeSwitch.astro';
         <span
           data-brand-copy-label
           class="mt-2 mb-1 block text-gray-600 dark:text-gray-400"
-          >ロゴをコピー</span
+          >{brand.copy}</span
         >
       </button>
 
@@ -110,7 +140,7 @@ import ThemeSwitch from './ThemeSwitch.astro';
           <path d="m7 10 5 5 5-5"></path>
           <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
         </svg>
-        SVGをダウンロード
+        {brand.downloadSvg}
       </a>
       <a
         role="menuitem"
@@ -133,58 +163,37 @@ import ThemeSwitch from './ThemeSwitch.astro';
           <path d="m7 10 5 5 5-5"></path>
           <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
         </svg>
-        PNGをダウンロード
+        {brand.downloadPng}
       </a>
       <p
         class="px-3 pt-1.5 pb-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400"
       >
-        現在のテーマに合わせた配色（ライト＝黒／ダーク＝白）で書き出します。
+        {brand.themeNote}
       </p>
     </div>
   </div>
+  <div class="order-3 sm:order-2">
+    <SiteControls alternatePath={alternatePath} />
+  </div>
   <nav
-    class="flex sm:items-center flex-wrap flex-col sm:flex-row gap-6 sm:gap-12"
-    aria-label="メインナビゲーション"
+    class="order-2 sm:order-3 sm:w-full flex sm:items-center flex-wrap flex-col sm:flex-row gap-6 sm:gap-12"
+    aria-label={nav.label}
   >
     <ul class="flex gap-3 sm:gap-6 flex-wrap flex-col sm:flex-row">
-      <li>
-        <a
-          href="/"
-          class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/' && 'page'}
-        >
-          ホーム
-        </a>
-      </li>
-      <li>
-        <a
-          href="/about"
-          class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/about' && 'page'}
-        >
-          会社概要
-        </a>
-      </li>
-      <li>
-        <a
-          href="/news"
-          class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/news' && 'page'}
-        >
-          お知らせ
-        </a>
-      </li>
-      <li>
-        <a
-          href="/contact"
-          class="underline hover:no-underline"
-          aria-current={Astro.url.pathname === '/contact' && 'page'}
-        >
-          お問い合わせ
-        </a>
-      </li>
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={localizePath(locale, link.href)}
+              class="underline hover:no-underline"
+              aria-current={isCurrent(link.href) && 'page'}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
-    <ThemeSwitch />
   </nav>
 </header>
 
@@ -201,8 +210,6 @@ import ThemeSwitch from './ThemeSwitch.astro';
     },
   } as const;
 
-  const COPY_LABEL = 'ロゴをコピー';
-
   const menu = document.querySelector<HTMLElement>('[data-brand-menu]');
   const trigger = menu?.querySelector<HTMLAnchorElement>(
     '[data-brand-trigger]'
@@ -210,6 +217,11 @@ import ThemeSwitch from './ThemeSwitch.astro';
   const popover = menu?.querySelector<HTMLElement>('[data-brand-popover]');
 
   if (menu && trigger && popover) {
+    // 表示文言は言語ごとに変わるので、data属性からHTML側の値を受け取る
+    const COPY_LABEL = popover.dataset.copyLabel ?? '';
+    const COPIED_LABEL = popover.dataset.copiedLabel ?? '';
+    const COPY_FAILED_LABEL = popover.dataset.copyFailedLabel ?? '';
+
     const currentTheme = () =>
       document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
@@ -334,13 +346,13 @@ import ThemeSwitch from './ThemeSwitch.astro';
 
       const source = buildSvgSource();
       if (!source || !navigator.clipboard) {
-        notify('コピーできませんでした');
+        notify(COPY_FAILED_LABEL);
         return;
       }
 
       navigator.clipboard.writeText(source).then(
-        () => notify('コピーしました'),
-        () => notify('コピーできませんでした')
+        () => notify(COPIED_LABEL),
+        () => notify(COPY_FAILED_LABEL)
       );
     });
 

@@ -1,11 +1,12 @@
 ---
 // Floating action menu that follows scroll (fixed position)
-const normalizePath = (p: string) => {
-  if (!p) return '/';
-  if (p !== '/' && p.endsWith('/')) return p.slice(0, -1);
-  return p;
-};
-const currentPath = normalizePath(Astro.url.pathname);
+import { localizePath, normalizePath, stripLocale, t } from '../i18n/ui';
+
+const locale = Astro.currentLocale;
+const { nav } = t(locale);
+
+// ロケール接頭辞を外して比較するので、/en/news/foo でも「お知らせ」が現在地になる
+const currentPath = stripLocale(Astro.url.pathname);
 const isActive = (href: string) => {
   const target = normalizePath(href);
   if (target === '/') return currentPath === '/';
@@ -27,10 +28,10 @@ const iconSvg = (name: IconName) => {
 };
 
 const links: Array<{ href: string; label: string; icon: IconName }> = [
-  { href: '/', label: 'ホーム', icon: 'home' },
-  { href: '/about', label: '会社概要', icon: 'info' },
-  { href: '/news', label: 'お知らせ', icon: 'doc' },
-  { href: '/contact', label: 'お問い合わせ', icon: 'mail' },
+  { href: '/', label: nav.home, icon: 'home' },
+  { href: '/about', label: nav.about, icon: 'info' },
+  { href: '/news', label: nav.news, icon: 'doc' },
+  { href: '/contact', label: nav.contact, icon: 'mail' },
 ];
 
 const baseLinkClass =
@@ -47,7 +48,7 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
       id="floating-menu-button"
       type="button"
       class="flex items-center justify-center gap-2 py-3 px-6 sm:py-4 sm:px-12 rounded-full bg-neutral-800 text-white shadow-xl ring-1 ring-white/10 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-4 focus-visible:ring-offset-gray-500 text-[1.125rem] sm:text-[1.5rem]"
-      aria-label="メニュー"
+      aria-label={nav.menu}
       aria-haspopup="menu"
       aria-expanded="false"
       aria-controls="floating-menu-panel"
@@ -66,7 +67,7 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
       >
         <path d="M6 9l6 6 6-6"></path>
       </svg>
-      <span>メニュー</span>
+      <span>{nav.menu}</span>
     </button>
 
     <div
@@ -80,7 +81,7 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
           links.map((link) => (
             <li>
               <a
-                href={link.href}
+                href={localizePath(locale, link.href)}
                 class={`${baseLinkClass} ${
                   isActive(link.href) ? activeClass : ''
                 }`}

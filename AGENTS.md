@@ -6,7 +6,9 @@
 
 ## Project Structure & Module Organization
 
-- `src/pages/` Astro pages (routing), e.g., `src/pages/index.astro`.
+- `src/pages/` Astro pages (routing), e.g., `src/pages/index.astro`. 日本語が既定（`/`）、英語版は `src/pages/en/` 配下（`/en/`）。
+- `src/i18n/ui.ts` 共通UI文言の辞書（ja / en）とロケール用ヘルパー（`localizePath`, `stripLocale`, `alternateUrl` など）。共通コンポーネントの文言はここに追加する。
+- `src/content/news/` 日本語のお知らせ（Markdown）。英語版は `src/content/news-en/` に同じファイル名で置くと、言語切替で同じ記事に飛べる（英語版がない記事は `/en/news` にフォールバック）。
 - `src/components/` Reusable Astro components, PascalCase (e.g., `GlobalHeader.astro`).
 - `src/layouts/` Shared page layouts.
 - `src/css/` Global styles (Tailwind v4 entry in `global.css`).
@@ -47,3 +49,4 @@
 
 - Copy `.env.example` to `.env` as needed; never commit secrets.
 - Keep `astro.config.mjs` `site` accurate for sitemap and URLs.
+- i18n は Astro 組み込みのルーティング（`defaultLocale: ja`, `prefixDefaultLocale: false`）。`Layout.astro` が `<html lang>` と hreflang を言語ごとに出し分けるので、ページ側で重複して書かない。

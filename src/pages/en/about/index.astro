@@ -1,0 +1,102 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import GlobalHeader from '../../../components/GlobalHeader.astro';
+---
+
+<Layout
+  title="About | Lumilinks inc."
+  description="Company overview of Lumilinks inc.: company name, address, representative, business activities, and more."
+>
+  <head>
+    <!-- 外部ドメインへの事前接続 -->
+    <link rel="preconnect" href="https://x.com" />
+    <link rel="preconnect" href="https://bnn.co.jp" />
+  </head>
+
+  <section class="pt-16">
+    <GlobalHeader />
+    <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
+      <h1 class="text-4xl sm:text-5xl font-normal mb-8">About</h1>
+    </div>
+    <div class="flex flex-col gap-8">
+      <div>
+        <h3 class="font-semibold">Company name:</h3>
+        <p>Lumilinks inc.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold">Address:</h3>
+        <p>
+          2F-C, Shibuya Dogenzaka Tokyu Building,<br />1-10-8 Dogenzaka,
+          Shibuya-ku, Tokyo 150-0043, Japan
+        </p>
+      </div>
+      <div>
+        <h3 class="font-semibold">CEO / Representative Director:</h3>
+        <div class="flex flex-col gap-4">
+          <p>
+            Kogiso / <a
+              href="https://x.com/kgsi"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">X (formerly Twitter)</a
+            >
+          </p>
+          <p>
+            After working as a designer and engineer at a contract production
+            company, Kogiso joined SAKURA internet to work on product
+            development. In 2020 Kogiso joined SmartHR as a product designer,
+            leading design system and product work. Following roles as a
+            designer at a generative AI startup and a zero-to-one startup,
+            Kogiso founded Lumilinks inc. With design at the core, Lumilinks
+            supports organizations, builds AI workflows, and assists with hiring
+            and public relations.
+          </p>
+          <p>
+            Kogiso is the author of <a
+              class="underline hover:no-underline"
+              href="https://bnn.co.jp/products/9784802512480"
+              target="_blank"
+              rel="noopener"
+              ><span lang="ja">『ちいさくはじめるデザインシステム』</span> (Starting
+              a Design System Small)</a
+            > (BNN) and organizes <a
+              class="underline hover:no-underline"
+              href="https://crossrel.jp/"
+              target="_blank"
+              rel="noopener">CrossRel</a
+            >, a community for the tech industry.
+          </p>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-semibold">Capital:</h3>
+        <p>500,000 JPY</p>
+      </div>
+      <div>
+        <h3 class="font-semibold">Established:</h3>
+        <p>March 17, 2025</p>
+      </div>
+      <div>
+        <h3 class="font-semibold">Corporate number:</h3>
+        <p>5011001168597</p>
+      </div>
+      <div>
+        <h3 class="font-semibold">
+          Qualified invoice issuer registration number:
+        </h3>
+        <p>T5011001168597</p>
+      </div>
+      <div>
+        <h3 class="font-semibold">Business activities:</h3>
+        <ul class="list-disc pl-8 flex flex-col gap-2">
+          <li>Web and application architecture, UI design, and development</li>
+          <li>Brand development and brand consulting</li>
+          <li>Design consulting and advisory</li>
+          <li>PR and recruitment support</li>
+          <li>Community planning and management</li>
+          <li>Planning, development, and operation of our own services</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -9,6 +9,14 @@ import compress from 'astro-compress';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://lumilinks.jp',
+  // 日本語は従来どおり `/`、英語は `/en/` 配下に置く
+  i18n: {
+    defaultLocale: 'ja',
+    locales: ['ja', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [
     icon(),
     partytown({
@@ -16,7 +24,16 @@ export default defineConfig({
         forward: ['dataLayer.push'],
       },
     }),
-    sitemap(),
+    sitemap({
+      // サイトマップに hreflang の alternate リンクを出力する
+      i18n: {
+        defaultLocale: 'ja',
+        locales: {
+          ja: 'ja',
+          en: 'en',
+        },
+      },
+    }),
     compress({
       // Adjusted to match astro-compress option names per typings
       // CSSはfalse固定。astro-compressが内部で使うcssoは

@@ -1,18 +1,20 @@
 ---
+import { localizePath, t } from '../i18n/ui';
 
+const locale = Astro.currentLocale;
+const { nav, footer } = t(locale);
 ---
 
 <footer class="mt-64 pb-32 lg:pb-16 flex flex-col gap-4">
   <nav>
     <ul class="flex flex-row gap-4">
-      <li class="before:content-['>']">
-        <a href="/privacy" class="underline hover:no-underline"
-          >プライバシーポリシー</a
+      <li>
+        <a
+          href={localizePath(locale, '/privacy')}
+          class="underline hover:no-underline">{nav.privacy}</a
         >
       </li>
     </ul>
   </nav>
-  <address class="not-italic">
-    Copyright&copy; Lumilinks inc. ALL Rights Reserved.
-  </address>
+  <address class="not-italic" set:html={footer.copyright} />
 </footer>

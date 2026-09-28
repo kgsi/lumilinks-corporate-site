@@ -1,20 +1,31 @@
 ---
 import Layout from './Layout.astro';
 import GlobalHeader from '../components/GlobalHeader.astro';
+import { localizePath, resolveLocale, t } from '../i18n/ui';
 
 interface Props {
   title: string;
   description?: string;
   pubDate?: string;
+  /** もう一方の言語に同じ記事がない場合の飛び先（例: /en/news） */
+  alternatePath?: string;
 }
 
-const { title, description, pubDate } = Astro.props as Props;
+const { title, description, pubDate, alternatePath } = Astro.props as Props;
+const locale = resolveLocale(Astro.currentLocale);
+const { titleSuffix, nav, newsPost } = t(locale);
 ---
 
-<Layout title={`${title} | 株式会社Lumilinks`} description={description}>
+<Layout
+  title={`${title} | ${titleSuffix}`}
+  description={description}
+  alternatePath={alternatePath}
+>
   <section class="pt-16">
-    <GlobalHeader />
-    <div class="grid grid-cols-1 mb-8 pt-16">
+    <GlobalHeader alternatePath={alternatePath} />
+    <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
+      <!-- ページタイトル。見出しの階層は記事タイトル（h1）を主にするため p にしている -->
+      <p class="text-4xl sm:text-5xl font-normal mb-8">{nav.news}</p>
       <h1 class="text-4xl font-normal mb-2 leading-tight">
         {title}
       </h1>
@@ -24,10 +35,17 @@ const { title, description, pubDate } = Astro.props as Props;
         )
       }
     </div>
+    <!-- 本文サイズ・行間・文字色はサイト共通の本文（body）に揃える。prose-2xl = 1.5rem -->
     <article
-      class="prose prose-xl prose-neutral dark:prose-invert max-w-none prose-h2:text-3xl prose-p:text-black mt-16"
+      class="prose prose-2xl prose-neutral dark:prose-invert max-w-none leading-[1.75] [--tw-prose-body:var(--text-primary)] [--tw-prose-invert-body:var(--text-primary)] prose-h2:text-3xl mt-24"
     >
       <slot />
     </article>
+    <p class="mt-32">
+      <a
+        href={localizePath(locale, '/news')}
+        class="underline hover:no-underline">{newsPost.backToList}</a
+      >
+    </p>
   </section>
 </Layout>

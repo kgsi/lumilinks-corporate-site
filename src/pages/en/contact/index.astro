@@ -1,0 +1,118 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import GlobalHeader from '../../../components/GlobalHeader.astro';
+
+// 環境変数からSSGFormのURLを取得
+const ssgformUrl = import.meta.env.SSGFORM_URL;
+const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+---
+
+<Layout
+  title="Contact | Lumilinks inc."
+  description="Contact form for Lumilinks inc. Feel free to reach out about projects, consultations, or anything else."
+>
+  <section class="pt-16">
+    <GlobalHeader />
+    <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
+      <h1 class="text-4xl sm:text-5xl font-normal mb-8">Contact</h1>
+      <p class="mb-4">
+        Please feel free to reach out using the form below. You can also contact
+        us via <a
+          href="https://x.com/kgsi"
+          target="_blank"
+          rel="noopener"
+          class="underline hover:no-underline">X (formerly Twitter)</a
+        > or <a
+          href="https://www.facebook.com/shinichi.kogiso/"
+          target="_blank"
+          rel="noopener"
+          class="underline hover:no-underline">Facebook</a
+        >.
+      </p>
+    </div>
+
+    <!-- name 属性は SSGForm 側の設定（必須項目・自動返信のメール欄など）と紐づくため、日本語フォームと同じ値にしている -->
+    <form
+      action={ssgformUrl}
+      method="post"
+      class="flex flex-col gap-6 max-w-2xl"
+      id="contact-form"
+    >
+      <div class="flex flex-col gap-2">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="お名前"
+          required
+          class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="メールアドレス"
+          autocomplete="email"
+          required
+          class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="subject">Subject (optional)</label>
+        <input
+          type="text"
+          id="subject"
+          name="件名"
+          class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="お問い合わせ内容"
+          rows="6"
+          required
+          class="px-4 py-2 border border-black dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
+        ></textarea>
+      </div>
+
+      <div class="flex flex-row items-center gap-4">
+        <input
+          type="checkbox"
+          id="privacy"
+          class="w-6 h-6 mb-0.5"
+          name="プライバシーポリシーに同意して送信する"
+          required
+        />
+        <label for="privacy" class="text-normal mt-0.5">
+          I agree to the <a
+            href="/en/privacy"
+            class="underline hover:no-underline">Privacy Policy</a
+          >
+        </label>
+      </div>
+
+      <div class="g-recaptcha" data-sitekey={recaptchaSiteKey}></div>
+
+      <div class="flex items-center gap-4 mt-4">
+        <button
+          type="submit"
+          class="px-8 py-2 bg-black text-white dark:text-black dark:bg-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Send
+        </button>
+      </div>
+    </form>
+  </section>
+</Layout>
+<script
+  is:inline
+  src="https://www.google.com/recaptcha/api.js?hl=en"
+  async
+  defer></script>

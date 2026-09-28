@@ -1,0 +1,54 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import GlobalHeader from '../../../components/GlobalHeader.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { compareByDateInId, newsSlug } from '../../../i18n/ui';
+
+type PostMeta = {
+  title: string;
+  description?: string;
+  pubDate?: string;
+  url: string;
+};
+const allPosts: CollectionEntry<'newsEn'>[] = await getCollection('newsEn');
+const posts: PostMeta[] = allPosts.sort(compareByDateInId).map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  pubDate: post.data.pubDate,
+  url: `/en/news/${newsSlug(post.id)}`,
+}));
+---
+
+<Layout
+  title="News | Lumilinks inc."
+  description="News and announcements from Lumilinks inc."
+>
+  <section class="pt-16">
+    <GlobalHeader />
+    <div class="grid grid-cols-1 gap-4 mb-8 pt-16">
+      <h1 class="text-4xl sm:text-5xl font-normal mb-8">News</h1>
+    </div>
+    <div class="flex flex-col gap-8">
+      {
+        posts.length === 0 ? (
+          <p>There is no news yet.</p>
+        ) : (
+          <div class="flex flex-col gap-6">
+            {posts.map((post) => (
+              <article>
+                <a href={post.url} class="underline hover:no-underline">
+                  <h3 class="text-2xl">{post.title}</h3>
+                </a>
+                {post.pubDate && (
+                  <p class="text-gray-500 dark:text-gray-400 mt-1 text-lg">
+                    {post.pubDate}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Layout>

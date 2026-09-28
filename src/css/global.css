@@ -52,3 +52,8 @@ body {
   background-color: var(--background);
   color: var(--text-primary);
 }
+
+/* リンクの下線を文字から少し離す（本文・ナビ・記事内すべてに効く） */
+a {
+  text-underline-offset: 0.2em;
+}

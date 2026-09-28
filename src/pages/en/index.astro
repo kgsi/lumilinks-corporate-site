@@ -1,0 +1,210 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import GlobalHeader from '../../components/GlobalHeader.astro';
+import { compareByDateInId, newsSlug } from '../../i18n/ui';
+
+import imageCrossRel from '../../assets/crossrel.png';
+import imageDesignerMentor from '../../assets/designer-mentor.png';
+
+// 英語のお知らせ（content collection）を取得して最新順に整形
+type NewsMeta = {
+  title: string;
+  description?: string;
+  pubDate?: string;
+  url: string;
+};
+const newsCollection: CollectionEntry<'newsEn'>[] =
+  await getCollection('newsEn');
+const newsPosts: NewsMeta[] = newsCollection
+  .sort(compareByDateInId)
+  .slice(0, 5)
+  .map((post) => ({
+    title: post.data.title,
+    description: post.data.description,
+    pubDate: post.data.pubDate,
+    url: `/en/news/${newsSlug(post.id)}`,
+  }));
+---
+
+<Layout>
+  <div class="flex flex-col gap-32">
+    <div class="h-full">
+      <div class="flex flex-col gap-24 justify-between pt-16 pb-64">
+        <GlobalHeader />
+        <div class="flex flex-col gap-4">
+          <h1
+            class="text-[clamp(2.5rem,5vw,4rem)] leading-tight break-keep font-normal"
+          >
+            A company of design, <wbr />technology, <wbr />and community.
+          </h1>
+          <p class="text-3xl leading-relaxed">
+            Lumilinks builds on design and engineering, harnesses technologies
+            such as AI, and connects people to create new value.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">Services:</h2>
+      <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">Development & Design</h3>
+          <p>
+            As specialists in digital product and service development, we
+            support every stage from planning through architecture, design, and
+            implementation. Covering everything from information design to
+            managing the development process, we work alongside you to build
+            products that are easy to use and valuable to users, while staying
+            focused on your business goals.
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">Organizations & Systems</h3>
+          <p>
+            Combining more than ten years of experience running design
+            organizations with hands-on knowledge of the latest AI tools, we
+            help update the way your organization itself makes things.
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">Community & PR</h3>
+          <p>
+            We create spaces where community members can connect with
+            confidence, share knowledge, and grow together. Online and offline,
+            we handle event planning, content production, facilitation, and
+            more, so that each person's goals and ambitions can be realized to
+            the fullest. We also support hiring for designers and developers as
+            well as public relations.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">Projects:</h2>
+      <div class="flex flex-col gap-16">
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://crossrel.jp/"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">CrossRel</a
+            >
+          </h3>
+          <p>
+            CrossRel is an event community that brings together diverse talent
+            from the tech industry, where knowledge and people intersect. We aim
+            to create new value that emerges from these intersections, beyond
+            what any individual could achieve alone.
+          </p>
+          <Image
+            src={imageCrossRel}
+            alt="Screenshot of CrossRel"
+            width={800}
+            height={400}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://menta.work/plan/2529"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">Designer Mentoring</a
+            >
+          </h3>
+          <p>
+            Drawing on more than fifteen years of experience, we offer a
+            mentoring service for designers, from working through concerns and
+            challenges to building skills.
+          </p>
+          <Image
+            src={imageDesignerMentor}
+            alt="Overview image of the designer mentoring service"
+            width={800}
+            height={400}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://design-harness.com/"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">Design Harness</a
+            >
+          </h3>
+          <p>
+            Design Harness introduces a way of thinking for moving the design
+            process forward in collaboration with AI agents. Built around a
+            four-layer model of constraints, context, verification, and
+            evaluation, it explores how to systematize design in the age of AI.
+          </p>
+          <img
+            src="https://design-harness.com/assets/og-image.jpg"
+            alt="Key visual of Design Harness"
+            width="800"
+            height="420"
+            loading="lazy"
+            decoding="async"
+            class="w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-4">
+          <h3 class="text-4xl font-normal">
+            <a
+              href="https://parascope.design/"
+              target="_blank"
+              rel="noopener"
+              class="underline hover:no-underline">Parascope</a
+            >
+          </h3>
+          <p>
+            Parascope is a curation site that brings a design perspective to
+            everyone who builds, including engineers and product managers. It
+            collects and organizes resources for developing design skills.
+          </p>
+          <img
+            src="https://parascope.design/og-main.png"
+            alt="Key visual of Parascope"
+            width="800"
+            height="420"
+            loading="lazy"
+            decoding="async"
+            class="w-full"
+          />
+        </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-8">
+      <h2 class="font-semibold">News:</h2>
+      <div class="flex flex-col gap-8">
+        {
+          newsPosts.length === 0 ? (
+            <p>There is no news yet.</p>
+          ) : (
+            newsPosts.map((post) => (
+              <article>
+                <a href={post.url} class="underline hover:no-underline">
+                  <h3 class="text-2xl">{post.title}</h3>
+                </a>
+                {post.pubDate && (
+                  <p class="text-gray-500 dark:text-gray-400 text-lg">
+                    {post.pubDate}
+                  </p>
+                )}
+              </article>
+            ))
+          )
+        }
+      </div>
+    </section>
+  </div>
+</Layout>

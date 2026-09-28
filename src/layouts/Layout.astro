@@ -1,21 +1,46 @@
 ---
+import GlobalFooter from '../components/GlobalFooter.astro';
+import FloatingMenu from '../components/FloatingMenu.astro';
+import { localizePath, resolveLocale, t } from '../i18n/ui';
+import '../css/global.css';
+
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * もう一方の言語に対応ページがない場合に指定する。
+   * hreflang の alternate と言語切替の飛び先がこのパスになる。
+   */
+  alternatePath?: string;
 }
 
+const locale = resolveLocale(Astro.currentLocale);
+const dict = t(locale);
+
 const {
-  title = '株式会社Lumilinks | デザインと、テクノロジーと、コミュニティの会社',
-  description = 'Lumilinksはデザインとエンジニアリングを軸に、AIなどのテクノロジーを駆使し、人と人をつなぎ、新しい価値をつくります。',
+  title = dict.defaultTitle,
+  description = dict.defaultDescription,
+  alternatePath,
 } = Astro.props;
 
-import GlobalFooter from '../components/GlobalFooter.astro';
-import FloatingMenu from '../components/FloatingMenu.astro';
-import '../css/global.css';
+// hreflang 用に、日本語版と英語版それぞれの絶対URLを組み立てる
+const site = Astro.site ?? new URL('https://lumilinks.jp');
+const currentPath = Astro.url.pathname;
+// 自分自身の言語は常に現在のURL、もう一方の言語だけ alternatePath（翻訳がない場合の行き先）を使う
+const otherPath = alternatePath ?? currentPath;
+const jaPath = locale === 'ja' ? currentPath : otherPath;
+const enPath = locale === 'en' ? currentPath : otherPath;
+// canonical やサイトマップと同じく末尾スラッシュ付きに揃える
+const withTrailingSlash = (path: string) =>
+  path.endsWith('/') ? path : `${path}/`;
+const jaHref = new URL(withTrailingSlash(localizePath('ja', jaPath)), site)
+  .href;
+const enHref = new URL(withTrailingSlash(localizePath('en', enPath)), site)
+  .href;
 ---
 
 <!doctype html>
-<html lang="ja" class="light">
+<html lang={locale} class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -25,7 +50,8 @@ import '../css/global.css';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Lumilinks" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta property="og:site_name" content="株式会社Lumilinks" />
+    <meta property="og:site_name" content={dict.siteName} />
+    <meta property="og:locale" content={dict.ogLocale} />
     <meta property="og:image" content="https://lumilinks.jp/ogp.png" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -37,6 +63,9 @@ import '../css/global.css';
     <meta property="og:url" content={Astro.url.href} />
     <meta name="description" content={description} />
     <link rel="canonical" href={Astro.url.href} />
+    <link rel="alternate" hreflang="ja" href={jaHref} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="x-default" href={jaHref} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />

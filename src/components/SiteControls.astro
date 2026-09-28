@@ -1,0 +1,51 @@
+---
+// ヘッダーのロゴ行の右端に置く言語切替（JP / EN）とダークモード切替。
+// GlobalHeader.astro から1回だけ呼び出す（ThemeSwitch は id を持つので複数置けない）。
+import ThemeSwitch from './ThemeSwitch.astro';
+import { alternateUrl, resolveLocale, t } from '../i18n/ui';
+
+interface Props {
+  /** もう一方の言語に対応ページがない場合の飛び先（例: /en/news） */
+  alternatePath?: string;
+}
+
+const { alternatePath } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
+const { languageSwitch } = t(locale);
+
+const switchHref = alternateUrl(locale, alternatePath ?? Astro.url.pathname);
+
+// 現在の言語は太字で表示し、もう一方だけリンクにする
+const languages = [
+  { code: 'ja', label: 'JP' },
+  { code: 'en', label: 'EN' },
+] as const;
+---
+
+<div class="flex items-center gap-4 text-base">
+  <nav aria-label={languageSwitch.label} class="flex items-center gap-1">
+    {
+      languages.map(({ code, label }, index) => (
+        <>
+          {index > 0 && <span aria-hidden="true">/</span>}
+          {code === locale ? (
+            <span class="font-bold" aria-current="true" lang={code}>
+              {label}
+            </span>
+          ) : (
+            <a
+              href={switchHref}
+              hreflang={code}
+              lang={code}
+              aria-label={languageSwitch.switchToAria}
+              class="underline hover:no-underline"
+            >
+              {label}
+            </a>
+          )}
+        </>
+      ))
+    }
+  </nav>
+  <ThemeSwitch />
+</div>
