@@ -5,7 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --font-family-base: 'IBM Plex Sans JP', sans-serif;
+  --font-family-base: 'Gen Interface JP', sans-serif;
   --body-column: 45rem;
   --body-padding-without-safe-area: clamp(
     1rem,

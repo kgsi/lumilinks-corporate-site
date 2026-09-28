@@ -66,11 +66,21 @@ const enHref = new URL(withTrailingSlash(localizePath('en', enPath)), site)
     <link rel="alternate" hreflang="ja" href={jaHref} />
     <link rel="alternate" hreflang="en" href={enHref} />
     <link rel="alternate" hreflang="x-default" href={jaHref} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- CSSは通常接続、woff2はCORS接続で取りに行くため両方を温めておく -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- Gen Interface JP: 本文300 / font-normal 400 / font-semibold 600 のみ読み込む -->
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400;600&display=swap"
+      href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.8.0/cdn/300.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.8.0/cdn/400.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/gen-interface-jp@0.8.0/cdn/600.css"
       rel="stylesheet"
     />
     <script
