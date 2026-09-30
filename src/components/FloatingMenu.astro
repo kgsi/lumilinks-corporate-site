@@ -13,29 +13,15 @@ const isActive = (href: string) => {
   return currentPath === target || currentPath.startsWith(target + '/');
 };
 
-type IconName = 'home' | 'info' | 'doc' | 'mail';
-const iconSvg = (name: IconName) => {
-  switch (name) {
-    case 'home':
-      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7"></path><path d="M9 22V12h6v10"></path></svg>`;
-    case 'info':
-      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>`;
-    case 'doc':
-      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V4a2 2 0 0 1 2-2h9l5 5v12.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M14 2v6h6"></path></svg>`;
-    case 'mail':
-      return `<svg class="h-5 w-5 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect><path d="M3 7l9 6 9-6"></path></svg>`;
-  }
-};
-
-const links: Array<{ href: string; label: string; icon: IconName }> = [
-  { href: '/', label: nav.home, icon: 'home' },
-  { href: '/about', label: nav.about, icon: 'info' },
-  { href: '/news', label: nav.news, icon: 'doc' },
-  { href: '/contact', label: nav.contact, icon: 'mail' },
+const links: Array<{ href: string; label: string }> = [
+  { href: '/', label: nav.home },
+  { href: '/about', label: nav.about },
+  { href: '/news', label: nav.news },
+  { href: '/contact', label: nav.contact },
 ];
 
 const baseLinkClass =
-  'js-menu-item flex items-center justify-between rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1.125rem] sm:text-[1.5rem]';
+  'js-menu-item flex items-center rounded-xl px-3 py-2 hover:bg-white/10 focus:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-800 text-[1.125rem] sm:text-[1.5rem]';
 const activeClass = 'bg-white/10 ring-2 ring-white/40';
 ---
 
@@ -89,7 +75,6 @@ const activeClass = 'bg-white/10 ring-2 ring-white/40';
                 aria-current={isActive(link.href) && 'page'}
               >
                 <span>{link.label}</span>
-                <span aria-hidden="true" set:html={iconSvg(link.icon)} />
               </a>
             </li>
           ))
