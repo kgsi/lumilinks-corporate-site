@@ -26,6 +26,9 @@ export const ui = {
     newsPost: {
       backToList: 'お知らせ一覧に戻る',
     },
+    dialog: {
+      close: '閉じる',
+    },
     languageSwitch: {
       label: '言語切替',
       switchToAria: 'Switch to English',
@@ -65,6 +68,9 @@ export const ui = {
     },
     newsPost: {
       backToList: 'Back to News',
+    },
+    dialog: {
+      close: 'Close',
     },
     languageSwitch: {
       label: 'Language',

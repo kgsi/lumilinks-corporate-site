@@ -1,10 +1,14 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import GlobalHeader from '../../../components/GlobalHeader.astro';
+import Dialog from '../../../components/Dialog.astro';
+import { SALES_SOLICITATION_FEE_YEN } from '../../../consts';
 
 // 環境変数からSSGFormのURLを取得
 const ssgformUrl = import.meta.env.SSGFORM_URL;
 const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
+const salesFee = `JPY ${SALES_SOLICITATION_FEE_YEN.toLocaleString('en-US')}`;
 ---
 
 <Layout
@@ -35,9 +39,45 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     <form
       action={ssgformUrl}
       method="post"
-      class="flex flex-col gap-6 max-w-2xl"
+      class="flex flex-col gap-6"
       id="contact-form"
     >
+      <!-- 「営業・ご提案」の選択肢はあえて置かない（営業目的の送信は受け付けないため）。
+           value は日本語フォームと同じにして、通知メールで種別をそろえて読めるようにしている -->
+      <fieldset class="flex flex-col gap-2">
+        <legend class="mb-2">Inquiry type</legend>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="お仕事のご依頼・ご相談"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          Project request or consultation
+        </label>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="取材・登壇のご依頼"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          Interview or speaking request
+        </label>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="その他"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          Other
+        </label>
+      </fieldset>
+
       <div class="flex flex-col gap-2">
         <label for="name">Name</label>
         <input
@@ -82,19 +122,45 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         ></textarea>
       </div>
 
-      <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-row items-start gap-4">
         <input
           type="checkbox"
           id="privacy"
-          class="w-6 h-6 mb-0.5"
+          class="w-6 h-6 mt-[calc((1lh-1.5rem)/2)] shrink-0"
           name="プライバシーポリシーに同意して送信する"
           required
         />
-        <label for="privacy" class="text-normal mt-0.5">
+        <label for="privacy">
           I agree to the <a
             href="/en/privacy"
             class="underline hover:no-underline">Privacy Policy</a
           >
+        </label>
+      </div>
+
+      <!-- value は通知メールに残る。どの言語版の特約に同意したかが分かるよう日本語版と変えている -->
+      <div class="flex flex-row items-start gap-4">
+        <input
+          type="checkbox"
+          id="sales-terms-agree"
+          class="w-6 h-6 mt-[calc((1lh-1.5rem)/2)] shrink-0"
+          name="営業目的の送信に関する特約に同意する"
+          value="同意する（英語版）"
+          required
+        />
+        <label for="sales-terms-agree" class="flex flex-col gap-1">
+          <span>
+            I have read and agree to the <a
+              href="#sales-terms"
+              aria-haspopup="dialog"
+              class="underline hover:no-underline"
+              >Special Terms for Sales Solicitations</a
+            >
+          </span>
+          <span class="text-lg text-gray-500 dark:text-gray-400">
+            If this message is for sales, advertising, or solicitation, I will
+            pay {salesFee} per message (no consumption tax added).
+          </span>
         </label>
       </div>
 
@@ -109,6 +175,125 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         </button>
       </div>
     </form>
+
+    <!-- 特約の全文。同意チェックの「Special Terms for Sales Solicitations」のリンクで開く -->
+    <Dialog id="sales-terms" title="Special Terms for Sales Solicitations">
+      <p>
+        These terms apply to everyone who submits the contact form of Lumilinks
+        inc. ("we" or "us").
+      </p>
+
+      <div>
+        <h3 class="font-semibold mb-2">1. Application and Agreement</h3>
+        <p>
+          By checking "I have read and agree to the Special Terms for Sales
+          Solicitations" and submitting the form, you agree to these terms. If
+          you submit the form on behalf of a company or other organization, you
+          are treated as agreeing on its behalf.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">2. What Counts as Sales Solicitation</h3>
+        <p class="mb-2">
+          A "sales solicitation" is a message whose main purpose is to encourage
+          us to buy, contract for, use, list with, or advertise with a product
+          or service. Examples include:
+        </p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>
+            Offers of outsourced web production, system development, SEO, ad
+            management, or social media management
+          </li>
+          <li>
+            Invitations to buy ad space, media listings, exhibition booths, or
+            sponsorships
+          </li>
+          <li>
+            Pitches for recruitment agencies, staffing, job boards, sales
+            outsourcing, or offshore development
+          </li>
+          <li>
+            Pitches for fundraising, investment, M&amp;A, or grant application
+            services
+          </li>
+          <li>Messages aimed at getting a sales meeting or appointment</li>
+        </ul>
+        <p class="mb-2">The following are not sales solicitations:</p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>
+            Requests or consultations about work for us, and interview or
+            speaking requests
+          </li>
+          <li>Questions about our services or projects</li>
+          <li>
+            Replies to quotes or proposals we asked for, and messages from
+            people we are already working with
+          </li>
+        </ul>
+        <p>
+          A message framed as a request or question is still a sales
+          solicitation if its real purpose is to sell. We decide whether a
+          message is a sales solicitation based on its content, and we will tell
+          you the reason when we send an invoice.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">3. Prohibition and Fee</h3>
+        <p>
+          Sales solicitations through our contact form are prohibited. If you
+          send one anyway, you agree to pay us {salesFee} per message (no consumption
+          tax added). Each submission counts as one message, even if the content is
+          the same.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">4. Invoicing and Payment</h3>
+        <p>
+          We will email an invoice to the address you entered in the form.
+          Payment is due on the later of the last day of the month following the
+          month we received your message, or 14 days after we send the invoice.
+          You will pay by bank transfer to the account stated on the invoice,
+          and you will bear any transfer fees.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">5. Withdrawal and Oversight</h3>
+        <p>
+          Withdrawing a message after sending it for your own reasons, or
+          agreeing without reading these terms, does not remove the obligation
+          to pay. This does not limit any right of cancellation you have under
+          the Consumer Contract Act or other laws.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">
+          6. Records, Governing Law, and Jurisdiction
+        </h3>
+        <p>
+          We record the content and time of each submission and whether these
+          terms were agreed to, and use these records as the basis for
+          invoicing. These terms are governed by the laws of Japan, and the
+          Tokyo District Court has exclusive jurisdiction in the first instance
+          over any dispute relating to them.
+        </p>
+      </div>
+
+      <p>
+        These terms are a translation of the <a
+          href="/contact#sales-terms"
+          class="underline hover:no-underline">Japanese original</a
+        >. If there is any discrepancy, the Japanese version prevails.
+      </p>
+
+      <p class="text-base text-gray-500 dark:text-gray-400">
+        Established October 1, 2026
+      </p>
+    </Dialog>
   </section>
 </Layout>
 <script

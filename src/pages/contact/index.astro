@@ -1,10 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import GlobalHeader from '../../components/GlobalHeader.astro';
+import Dialog from '../../components/Dialog.astro';
+import { SALES_SOLICITATION_FEE_YEN } from '../../consts';
 
 // 環境変数からSSGFormのURLを取得
 const ssgformUrl = import.meta.env.SSGFORM_URL;
 const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
+const salesFee = `${SALES_SOLICITATION_FEE_YEN.toLocaleString('ja-JP')}円`;
 ---
 
 <Layout
@@ -34,9 +38,44 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     <form
       action={ssgformUrl}
       method="post"
-      class="flex flex-col gap-6 max-w-2xl"
+      class="flex flex-col gap-6"
       id="contact-form"
     >
+      <!-- 「営業・ご提案」の選択肢はあえて置かない（営業目的の送信は受け付けないため） -->
+      <fieldset class="flex flex-col gap-2">
+        <legend class="mb-2">お問い合わせ種別</legend>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="お仕事のご依頼・ご相談"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          お仕事のご依頼・ご相談
+        </label>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="取材・登壇のご依頼"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          取材・登壇のご依頼
+        </label>
+        <label class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="お問い合わせ種別"
+            value="その他"
+            required
+            class="w-5 h-5 mt-[calc((1lh-1.25rem)/2)] shrink-0"
+          />
+          その他
+        </label>
+      </fieldset>
+
       <div class="flex flex-col gap-2">
         <label for="name">お名前</label>
         <input
@@ -81,18 +120,44 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         ></textarea>
       </div>
 
-      <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-row items-start gap-4">
         <input
           type="checkbox"
           id="privacy"
-          class="w-6 h-6 mb-0.5"
+          class="w-6 h-6 mt-[calc((1lh-1.5rem)/2)] shrink-0"
           name="プライバシーポリシーに同意して送信する"
           required
         />
-        <label for="privacy" class="text-normal mt-0.5">
+        <label for="privacy">
           <a href="/privacy" class="underline hover:no-underline"
             >プライバシーポリシー</a
           >に同意して送信する
+        </label>
+      </div>
+
+      <!-- value は通知メールに残る。どの言語版の特約に同意したかが分かるよう英語版と変えている -->
+      <div class="flex flex-row items-start gap-4">
+        <input
+          type="checkbox"
+          id="sales-terms-agree"
+          class="w-6 h-6 mt-[calc((1lh-1.5rem)/2)] shrink-0"
+          name="営業目的の送信に関する特約に同意する"
+          value="同意する（日本語版）"
+          required
+        />
+        <label for="sales-terms-agree" class="flex flex-col gap-1">
+          <span>
+            <a
+              href="#sales-terms"
+              aria-haspopup="dialog"
+              class="underline hover:no-underline">営業目的の送信に関する特約</a
+            >を確認し、同意する
+          </span>
+          <span class="text-lg text-gray-500 dark:text-gray-400">
+            営業・宣伝・勧誘を目的とした送信の場合、送信1件につき{
+              salesFee
+            }（消費税の加算なし）を支払います。
+          </span>
         </label>
       </div>
 
@@ -107,6 +172,81 @@ const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         </button>
       </div>
     </form>
+
+    <!-- 特約の全文。同意チェックの「営業目的の送信に関する特約」のリンクで開く。
+         英語版から /contact#sales-terms でリンクしているので id は変えない -->
+    <Dialog id="sales-terms" title="営業目的の送信に関する特約">
+      <!-- 「株式会社Lumilinks」の英字の前で改行されると、両端揃えで手前の字間が大きく空くので左揃え -->
+      <p class="text-left">
+        この特約は、株式会社Lumilinks（以下「当社」）のお問い合わせフォームから送信するすべての方（以下「送信者」）に適用されます。
+      </p>
+
+      <div>
+        <h3 class="font-semibold mb-2">1. 適用と合意</h3>
+        <p>
+          送信者は、フォームの「営業目的の送信に関する特約を確認し、同意する」にチェックを入れて送信した時点で、この特約に同意したものとします。会社その他の団体の業務として送信する場合は、その団体を代理して同意したものとして扱います。
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">2. 営業目的の送信とは</h3>
+        <p class="mb-2">
+          「営業目的の送信」とは、当社に商品・サービスの購入、契約、利用、掲載、出稿などを勧めることを主な目的とする送信をいいます。たとえば次のようなものです。
+        </p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>
+            Web制作、システム開発、SEO、広告運用、SNS運用などの受託・代行の提案
+          </li>
+          <li>広告枠、メディア掲載、展示会出展、協賛の勧誘</li>
+          <li>人材紹介、人材派遣、採用媒体、営業代行、オフショア開発の案内</li>
+          <li>資金調達、投資、M&amp;A、補助金申請代行などの案内</li>
+          <li>商談やアポイントメントの獲得を目的とした連絡</li>
+        </ul>
+        <p class="mb-2">次のものは営業目的の送信に含みません。</p>
+        <ul class="list-disc pl-6 mb-4">
+          <li>当社へのお仕事のご依頼・ご相談、取材・登壇のご依頼</li>
+          <li>当社のサービスやプロジェクトについてのご質問</li>
+          <li>当社が求めた見積もりや提案への回答、取引中の方からのご連絡</li>
+        </ul>
+        <p>
+          ご依頼やご質問の形をとっていても、実際には勧誘が目的のものは営業目的の送信にあたります。あたるかどうかは送信の内容をもとに当社が判断し、請求するときはその理由をあわせてお知らせします。
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">3. 営業目的の送信の禁止と金額</h3>
+        <p>
+          当社は、お問い合わせフォームからの営業目的の送信を禁止しています。これに反して営業目的の送信を行った場合、送信者は当社に、送信1件につき{
+            salesFee
+          }（消費税の加算なし）を支払うものとします。同じ内容を複数回送信した場合は、送信ごとに1件と数えます。
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">4. 請求と支払い</h3>
+        <p>
+          当社は、フォームに入力されたメールアドレス宛てに、請求書を電子メールで送ります。支払期限は、送信を受け付けた日の属する月の翌月末日と、請求書を送った日から14日後のうち、遅いほうの日とします。送信者は、請求書に記載する当社指定の銀行口座へ振り込んで支払うものとし、振込手数料は送信者の負担とします。
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">5. 取り消しと見落とし</h3>
+        <p>
+          送信後に送信者の都合で取り消した場合や、この特約を読まずに同意した場合でも、支払いの義務はなくなりません。ただし、消費者契約法その他の法令で認められる取消しなどの権利を妨げるものではありません。
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2">6. 記録、準拠法と管轄</h3>
+        <p>
+          当社は、送信の内容、日時、この特約への同意の有無を記録し、請求の根拠として利用します。この特約は日本法に準拠し、この特約に関する紛争は、東京地方裁判所を第一審の専属的合意管轄裁判所とします。
+        </p>
+      </div>
+
+      <p class="text-base text-gray-500 dark:text-gray-400">
+        2026年10月1日 制定
+      </p>
+    </Dialog>
   </section>
 </Layout>
 <script is:inline src="https://www.google.com/recaptcha/api.js" async defer
